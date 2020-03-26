@@ -1,0 +1,19 @@
+.flex{
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-end{
+  justify-content: flex-end;
+}
+.col-50{
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+.col-40{
+  flex: 0 0 40%;
+  max-width: 40%;
+}
+.col-33{
+  flex: 0 0 33.3333333%;
+  max-width: 33.3333333%;
+}

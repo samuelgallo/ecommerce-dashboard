@@ -1,0 +1,12 @@
+.header{
+  &-search{
+    input.search{
+      width: 60%;
+    }
+  }
+  &-notifications{
+    margin-right: 2rem;
+  }
+  &-actions{
+  }
+}

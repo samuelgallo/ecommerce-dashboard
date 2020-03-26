@@ -1,12 +1,12 @@
 const mongoose = require('../config/database')
 
 const Settings = new mongoose.Schema({
-  store_name: {type: String,  default: ''},
-  email: {type: String,  trim: true},
-  phone: String,
+  store_name: {type: String,  required: true},
+  email: {type: String, lowercase:true, trim: true, required: true},
+  phone: {type: String, required: true},
   copyright: String,
-  hours: {type: String, default: ''},
-  welcome: {type: String, default: ''},
+  hours: String,
+  welcome: String,
   store_mode: Boolean,
 
   street_address_1: String,
@@ -16,11 +16,11 @@ const Settings = new mongoose.Schema({
   state: String,
   zip_code: String,
 
-
-  
-  store: {type: String, default: 'default'},
-
-  updated_at: {type: Date, default: Date.now}
+  //logo: Buffer, Object
+  logo: Array
+},
+{
+  timestamps: true
 })
 
 module.exports = mongoose.model('Settings', Settings)

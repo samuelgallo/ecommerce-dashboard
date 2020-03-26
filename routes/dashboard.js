@@ -1,6 +1,8 @@
 const express = require('express')
 const routes = express.Router()
 
+const upload = require('../config/multer')
+
 // Controllers
 const Dashboard = require('../controllers/DashboardController')
 const Settings = require('../controllers/SettingsController')
@@ -9,7 +11,7 @@ const Settings = require('../controllers/SettingsController')
 routes.get('/', Dashboard.index)
 
 routes.get('/settings', Settings.index)
-routes.post('/settings/save', Settings.save)
+routes.post('/settings/save', upload.single('logo'), Settings.save)
 /*
 routes.get('/dashboard/products', (req, res) => {});
 routes.get('/dashboard/product:id', (req, res) => {});

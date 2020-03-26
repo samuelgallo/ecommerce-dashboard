@@ -3,8 +3,8 @@
 //     title: 'Home'
 //   });
 // };
-const upload = require('../config/multer')
-
+//const upload = require('../config/multer').single('logo')
+const fs = require('fs')
 // Models
 const Settings = require('../models/Settings')
 
@@ -13,28 +13,51 @@ exports.index = async (req, res) => {
     const data = await Settings.findOne()
     res.render('settings', {store: data})
   }catch(e) {
-    res.render('404', {store: data})
+    res.render('404')
   }
 }
 
-exports.save = (req, res) =>{
-  // const data = new Settings({
-  //   store_name: req.body.store_name,
-  // })
+exports.save = async (req, res) =>{
   
-  let data = new Settings(req.body)
+  try{
 
 
-  console.log(data)
 
-  Settings.findOne().then(info => {
-    if(info) {
-      info.deleteOne({ _id: info._id })
-      console.log(info._id)
+    //console.log(req.file)
+    
+    const data = new Settings(req.body)
+    
+    const getFirstData = await Settings.findOne()
+
+    // const data = new Settings({
+    //   _id: getFirstData._id,
+    //   store_name: req.body.store_name,
+    //   hours: req.body.hours,
+    //   welcome: req.body.welcome,
+    // })
+
+    if(req.file) {
+      
+      data.logo = await req.file
+    }else{
+
+      data.logo = await getFirstData.logo
     }
-    data.save()
+    
+ 
+
+    if(getFirstData) {
+      data._id = await getFirstData._id
+
+      Settings.updateOne(data).exec()
+    } else {
+      data.save()
+    }
+
     res.redirect('/dashboard/settings')
-  }).catch(err => {
-    console.log(err)
-  })
+
+  } catch(err) {
+    res.render('503')
+  }
 }
+
