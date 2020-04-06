@@ -11,7 +11,7 @@ const Settings = require('../models/Settings')
 exports.index = async (req, res) => {
   try{
     const data = await Settings.findOne()
-    res.render('settings', {store: data})
+    res.render('settings', {title: 'Settings', store: data})
   }catch(e) {
     res.render('404')
   }

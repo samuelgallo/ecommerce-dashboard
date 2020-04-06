@@ -1,17 +1,49 @@
-<div class="sidebar">
-  <div class="logo">Dashboard</div>
-
-  <div class="sidebar-inner">
-    <ul class="sidebar-links sidebar-links-top">
-      <li><a href="/dashboard"><i data-feather="home"></i> Home</a></li>
-      <li><a href="/dashboard/categories"><i data-feather="layers"></i> Categories</a></li>
-      <li><a href="/dashboard/products"><i data-feather="book"></i> Products</a></li>
-      <li><a href="/dashboard/customers"><i data-feather="users"></i> Customers</a></li>
-      <li><a href="/dashboard/pages"><i data-feather="file"></i> Pages</a></li>
+<nav class="col-md-2 d-none d-md-block sidebar">
+  <div class="sidebar-sticky d-lg-flex flex-lg-column">
+    <ul class="nav flex-column sidebar-links sidebar-links-top">
+      <li class="nav-item">
+        <div class="logo">Dashboard</div>
+        
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/dashboard">
+          <span data-feather="home"></span>
+          Dashboard <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard/categories">
+          <span data-feather="layers"></span>
+          Categories
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard/products">
+          <span data-feather="book"></span>
+          Products
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard/pages">
+          <span data-feather="book"></span>
+          Pages
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard/customers">
+          <span data-feather="users"></span>
+          Customers
+        </a>
+      </li>
+      
     </ul>
 
-    <ul class="sidebar-links sidebar-links-bottom">
-      <li><a href="/dashboard/settings"><i data-feather="settings"></i> Settings</a></li>
+    <ul class="nav flex-column sidebar-links sidebar-links-bottom">
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard/settings">
+          <i data-feather="settings"></i> Settings
+        </a>
+      </li>
     </ul>
   </div>
-</div>
+</nav>

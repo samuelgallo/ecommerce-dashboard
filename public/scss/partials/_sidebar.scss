@@ -4,48 +4,38 @@
   flex: 0 0 16%;
   max-width: 16%;
   padding-left: 0;
-}
 
-.sidebar .logo{
-  font-size: 1.4rem;
-  color: #fff;
-  margin-bottom: 2rem;
-  padding-left: 15px;
-}
+  &-sticky{
+    height: 100vh;
+  }
 
-.sidebar-inner{
-  height: 100%;
-  max-height: 86%;
-  display: flex;
-  flex-direction: column;
-}
+  .logo{
+    font-size: 1.4rem;
+    color: #fff;
+    margin-bottom: 2rem;
+    padding-left: 15px;
+  }
 
-.sidebar ul{
-  list-style: none;
-}
+  ul{
+    list-style: none;
+  }
 
-.sidebar a{
-  color: #7f8fa6;
-  text-decoration: none;
-  display: block;
-  padding: .6rem 1.5rem;
-  transition: all ease-in-out .2s;
-}
-.sidebar a:hover{
-  color: #fff;
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  background: rgba(39, 60, 117, 0.8);
-}
+  a{
+    color: #7f8fa6;
+    text-decoration: none;
+    display: block;
+    padding: .6rem 1.5rem;
+    transition: all ease-in-out .2s;
+    &:hover{
+      color: #fff;
+      border-top-right-radius: 25px;
+      border-bottom-right-radius: 25px;
+      background: rgba(39, 60, 117, 0.8);
+    }
+  }
 
-.sidebar .feather {
-  width: 20px;
-  height: 20px;
-  margin-right: .4rem;
-  vertical-align: text-bottom;
-}
-
-.sidebar-links-bottom{
-  margin-top: auto;
-  margin-bottom: 1rem;
+  &-links-bottom{
+    margin-top: auto;
+    margin-bottom: 2rem;
+  }
 }

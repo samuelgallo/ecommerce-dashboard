@@ -1,0 +1,96 @@
+<%- include('../partials/head'); -%>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../partials/sidebar'); -%>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <%- include('../partials/header'); -%>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="welcome">
+            <h1>New Product</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <form method="POST" action="/dashboard/products/save" enctype="multipart/form-data">
+            <div class="form-group row">
+              <label for="name" class="col-sm-12 col-form-label">Name</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="name" name="name" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="sku" class="col-sm-12 col-form-label">SKU</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="sku" name="sku" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="price" class="col-sm-12 col-form-label">Price</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="price" name="price">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="special_price" class="col-sm-12 col-form-label">Special Price</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="special_price" name="special_price">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="description" class="col-sm-12 col-form-label">Description</label>
+              <div class="col-sm-12">
+                <textarea class="form-control" name="description" id="description" cols="30" rows="10"></textarea>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="path" class="col-sm-12 col-form-label">Url</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="path" name="path">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="quantity" class="col-sm-12 col-form-label">Quantity</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="quantity" name="quantity">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="status" class="col-sm-12 col-form-label">Status</label>
+              <div class="col-sm-12">
+                <select class="custom-select" id="status" name="status">
+                  <option selected disabled value="">Choose...</option>
+                  <option value="enable">Enable</option>
+                  <option value="disable">Disable</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="images" class="col-sm-12 col-form-label">Image</label>
+              <div class="col-sm-12">
+                <input type="file" id="images" name="images" accept="image/png, image/jpeg">
+              </div>
+            </div>
+
+            <div class="form-group row mt-5">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary"><span data-feather="save"></span> Save</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <%- include('../partials/copyright'); -%>
+
+    </main>
+  </div>
+</div>
+<%- include('../partials/footer'); -%>

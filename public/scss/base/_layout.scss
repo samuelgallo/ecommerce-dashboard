@@ -1,3 +1,7 @@
+html, body{
+  height: 100%;
+}
+
 body{
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
@@ -5,29 +9,9 @@ body{
   color: #192a56;
 }
 
-.main{
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-}
-
-.wrapper{
-  flex: 0 0 84%;
-  max-width: 84%;
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-}
-
 .feather{
   width: 20px;
   height: 20px;
   margin-right: .4rem;
   vertical-align: text-bottom;
-}
-
-table{
-  text-align: left;
-  width: 100%;
-  margin: 1rem;
 }

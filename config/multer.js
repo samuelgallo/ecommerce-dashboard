@@ -15,4 +15,3 @@ const upload = multer({ storage: multer.diskStorage({
 })})
 
 module.exports = upload
-
