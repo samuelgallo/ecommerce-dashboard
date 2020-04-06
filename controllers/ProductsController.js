@@ -3,7 +3,6 @@ const Products = require('../models/ProductModel')
 const formidable = require('formidable')
 
 exports.index = async (req, res) => {
-  console.log(__dirname)
   try{
     const data = await Products.find()
     res.status(200).render('product/index', {title: 'Products', products: data})
@@ -25,7 +24,7 @@ exports.save = async (req, res) => {
   
 
   try{
-    const form = formidable({ multiples: true, uploadDir: '../public/images/products' });
+    const form = formidable({ multiples: true});
 
     
  
@@ -38,7 +37,9 @@ form.parse(req, (err, fields, files) => {
 
   res.redirect('/dashboard/products')
 
-});
+}).on('fileBegin', (name, file) => {
+  file.path = './public/media/' + file.name
+})
 
 
   } catch(err) {

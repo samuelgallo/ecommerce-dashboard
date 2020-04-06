@@ -37,7 +37,9 @@
             <% products.forEach(function(product) { %>
               <tr>
                 <td><%= product.sku %></td>
-                <td><img src="https://burst.shopifycdn.com/photos/blue-t-shirt.jpg?width=373&format=pjpg&exif=0&iptc=0" alt="Title" width="120"></td>
+      
+
+                <td><img src="/public/media/<%- product.images[0]&&product.images[0].name %>" alt="Title" width="120"></td>
                 <td><%= product.name %></td>
                 <td><%= product.price %></td>
                 <td><%= product.status %></td>

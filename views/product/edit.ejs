@@ -35,6 +35,12 @@
               </div>
             </div>
             <div class="form-group row">
+              <label for="path" class="col-sm-12 col-form-label">Url</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="path" name="path" value="<%- product&&product.path %>">
+              </div>
+            </div>
+            <div class="form-group row">
               <label for="sku" class="col-sm-12 col-form-label">SKU</label>
               <div class="col-sm-12">
                 <input type="text" class="form-control" id="sku" name="sku" value="<%- product&&product.sku %>" required>
@@ -56,12 +62,6 @@
               <label for="description" class="col-sm-12 col-form-label">Description</label>
               <div class="col-sm-12">
                 <textarea class="form-control" name="description" id="description" cols="30" rows="10"  value="<%- product&&product.description %>"></textarea>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="path" class="col-sm-12 col-form-label">Url</label>
-              <div class="col-sm-12">
-                <input type="text" class="form-control" id="path" name="path" value="<%- product&&product.path %>">
               </div>
             </div>
             <div class="form-group row">

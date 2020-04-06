@@ -25,6 +25,12 @@
               </div>
             </div>
             <div class="form-group row">
+              <label for="path" class="col-sm-12 col-form-label">Url</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="path" name="path">
+              </div>
+            </div>
+            <div class="form-group row">
               <label for="sku" class="col-sm-12 col-form-label">SKU</label>
               <div class="col-sm-12">
                 <input type="text" class="form-control" id="sku" name="sku" required>
@@ -49,12 +55,6 @@
               </div>
             </div>
             <div class="form-group row">
-              <label for="path" class="col-sm-12 col-form-label">Url</label>
-              <div class="col-sm-12">
-                <input type="text" class="form-control" id="path" name="path">
-              </div>
-            </div>
-            <div class="form-group row">
               <label for="quantity" class="col-sm-12 col-form-label">Quantity</label>
               <div class="col-sm-12">
                 <input type="text" class="form-control" id="quantity" name="quantity">
@@ -74,7 +74,7 @@
             <div class="form-group row">
               <label for="images" class="col-sm-12 col-form-label">Image</label>
               <div class="col-sm-12">
-                <input type="file" id="images" name="images" accept="image/png, image/jpeg">
+                <input type="file" id="images" name="images" accept="image/png, image/jpeg" multiple>
               </div>
             </div>
 
@@ -93,4 +93,14 @@
     </main>
   </div>
 </div>
+<script>
+  var e = document.getElementById('name');
+  var out = document.getElementById('path');
+
+  e.addEventListener('input', function(event) {
+    window.setTimeout(function() {
+      out.value = event.target.value.toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s/g, '-').replace('--', '-');
+    }, 1);
+  });
+</script>
 <%- include('../partials/footer'); -%>
