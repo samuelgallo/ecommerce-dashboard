@@ -37,16 +37,13 @@
             <% products.forEach(function(product) { %>
               <tr>
                 <td><%= product.sku %></td>
-      
-
                 <td><img src="/public/media/<%- product.images[0]&&product.images[0].name %>" alt="Title" width="120"></td>
                 <td><%= product.name %></td>
-                <td><%= product.price %></td>
-                <td><%= product.status %></td>
+                <td>$<%= product.price.toFixed(2) %></td>
+                <td class="text-capitalize <%- product.status =='enable' ? 'text-success' : 'text-danger' %>"><%= product.status %></td>
                 <td><a href="/dashboard/products/edit/<%= product._id %>">Edit</a> | <a href="/dashboard/products/delete/<%= product._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></td>
               </tr>
-
-          <% }); %>
+            <% }); %>
 
           </tbody>
         </table>

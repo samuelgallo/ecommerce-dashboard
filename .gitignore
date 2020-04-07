@@ -20,6 +20,7 @@ npm-debug.log
 /bower_components
 .idea
 .env
+*.csv
 
 # Ignore Images
 *.jpg

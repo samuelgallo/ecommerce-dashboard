@@ -1,7 +1,7 @@
 const Products = require('../models/ProductModel')
-
 const formidable = require('formidable')
 
+// Route to show all products
 exports.index = async (req, res) => {
   try{
     const data = await Products.find()
@@ -11,6 +11,7 @@ exports.index = async (req, res) => {
   }
 }
 
+// Route to new products
 exports.new = async (req, res) => {
   try{
     res.status(200).render('product/new', {title: 'New Product'})
@@ -19,36 +20,33 @@ exports.new = async (req, res) => {
   }
 }
 
+// Route to save a new product
 exports.save = async (req, res) => {
-
-  
-
   try{
     const form = formidable({ multiples: true});
-
     
- 
-form.parse(req, (err, fields, files) => {
-  const data = new Products(fields)
-  console.log('fields:', fields)
-  console.log('files:', files.images)
-  data.images = files.images
-  data.save()
+    form.parse(req, (err, fields, files) => {
+      const data = new Products(fields)
+      data.images = files.images
 
-  res.redirect('/dashboard/products')
+      // save db
+      data.save()
 
-}).on('fileBegin', (name, file) => {
-  file.path = './public/media/' + file.name
-})
+      res.redirect('/dashboard/products')
 
+    }).on('fileBegin', (name, file) => {
+      file.path = './public/media/' + file.name
+    })
 
   } catch(err) {
     res.status(500).render('503', {error: err})
   }
 }
 
+// Route to edit one product
 exports.edit = async (req, res) => {
   try{
+    // retry by prduct id
     const data = await Products.findOne({_id: req.params.id})
     res.status(200).render('product/edit', {title: 'Edit', product: data})
   }catch(err) {
@@ -56,26 +54,28 @@ exports.edit = async (req, res) => {
   }
 }
 
+// Route to sabe a product edition
 exports.saveEdit = async (req, res, next) => {
   try{
-    console.log(req.params.id)
     const data = new Products(req.body)
     data._id = await req.params.id
-    console.log(data)
+
+    // update by product id
     Products.updateOne({_id: req.params.id}, {$set: data}).exec()
 
     res.status(200).render('product/edit', {title: 'Edit', product: data, message: 'Product successfully changed!'})
-    //res.redirect('back')
+
   }catch(err) {
-    console.log(err)
     res.status(500).render('503', {error: err})
   }
 }
 
+//Route do delete a product
 exports.delete = async (req, res) => {
   try{
     const id = await req.params.id
 
+    // detele by product id
     Products.deleteOne({_id: id}).exec()
 
     res.redirect('/dashboard/products')

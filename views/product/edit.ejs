@@ -1,4 +1,5 @@
 <%- include('../partials/head'); -%>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 <div class="container-fluid">
   <div class="row">
@@ -14,9 +15,6 @@
           </div>
         </div>
       </div>
-
-      
-
 
       <% if (typeof message !== 'undefined') { %>
       <div class="alert alert-success" role="alert">
@@ -49,25 +47,26 @@
             <div class="form-group row">
               <label for="price" class="col-sm-12 col-form-label">Price</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="price" name="price" value="<%- product&&product.price %>">
+                <input type="number" class="form-control" id="price" name="price" value="<%- product&&product.price %>">
               </div>
             </div>
             <div class="form-group row">
               <label for="special_price" class="col-sm-12 col-form-label">Special Price</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="special_price" name="special_price" value="<%- product&&product.special_price %>">
+                <input type="number" class="form-control" id="special_price" name="special_price" value="<%- product&&product.special_price %>">
               </div>
             </div>
             <div class="form-group row">
               <label for="description" class="col-sm-12 col-form-label">Description</label>
               <div class="col-sm-12">
-                <textarea class="form-control" name="description" id="description" cols="30" rows="10"  value="<%- product&&product.description %>"></textarea>
+                <div id="editor"><%- product&&product.description %></div>
+                <textarea class="form-control d-none" name="description" id="description" cols="30" rows="10"  value="<%- product&&product.description %>"></textarea>
               </div>
             </div>
             <div class="form-group row">
               <label for="quantity" class="col-sm-12 col-form-label">Quantity</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="quantity" name="quantity" value="<%- product&&product.quantity %>">
+                <input type="number" class="form-control" id="quantity" name="quantity" value="<%- product&&product.quantity %>">
               </div>
             </div>
             <div class="form-group row">
@@ -108,4 +107,45 @@
     </main>
   </div>
 </div>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+
+  var editor = document.getElementById('editor');
+  var description = document.getElementById('description');
+
+  editor.addEventListener('input keydown', function(event) {
+    window.setTimeout(function() {
+      description.value = event.target.innerHTML;
+      console.log(event.target.innerHTML)
+    }, 1);
+  });
+
+  var toolbarOptions = [
+    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+    ['blockquote', 'code-block'],
+
+    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+    [{ 'direction': 'rtl' }],                         // text direction
+
+    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean']                                         // remove formatting button
+  ];
+  var quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+      toolbar: toolbarOptions
+    }
+    
+  });
+</script>
 <%- include('../partials/footer'); -%>
