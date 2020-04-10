@@ -20,6 +20,9 @@ routes.post('/products/save', Products.save)
 routes.get('/products/edit/:id', Products.edit)
 routes.post('/products/edit/:id', Products.saveEdit)
 routes.get('/products/delete/:id', Products.delete)
+routes.get('/products/import', Products.import)
+routes.post('/products/upload', Products.upload)
+routes.post('/products/upload/image', Products.uploadImage)
 
 // routes.get('/products', (req, res) => {
 //   res.status(200).render('products', {title: 'Products'})

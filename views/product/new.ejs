@@ -1,5 +1,4 @@
 <%- include('../partials/head'); -%>
-<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
 <div class="container-fluid">
   <div class="row">
@@ -96,7 +95,25 @@
     </main>
   </div>
 </div>
-<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=2tmhebveh90johqv0vzxo23yd0e9wjb5267kzgb9qwv3k6ps"></script>
+<script>
+tinymce.init({
+selector: '#description',
+height: 500,
+theme: 'modern',
+plugins: 'print preview searchreplace autolink directionality   visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount  imagetools  contextmenu colorpicker textpattern help',
+toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+images_upload_url: '/dashboard/products/upload/image',
+  automatic_uploads: true,
+  /* we override default upload handler to simulate successful upload*/
+  images_upload_handler: function (blobInfo, success, failure) {
+    setTimeout(function () {
+      /* no matter what you upload, we will turn it into TinyMCE logo :)*/
+      success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+    }, 2000);
+  }
+});</script>
 <script>
   var e = document.getElementById('name');
   var out = document.getElementById('path');
@@ -107,41 +124,6 @@
     }, 1);
   });
 
-  var editor = document.getElementById('editor');
-  var description = document.getElementById('description');
-
-  editor.addEventListener('input', function(event) {
-    window.setTimeout(function() {
-      description.value = event.target.innerHTML;
-      console.log(event.target.innerHTML)
-    }, 1);
-  });
-
-  var toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],
-
-    [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction
-
-    [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-
-    [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],
-
-    ['clean']                                         // remove formatting button
-  ];
-  var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-      toolbar: toolbarOptions
-    }
-    
-  });
+  
 </script>
 <%- include('../partials/footer'); -%>

@@ -1,6 +1,20 @@
 const Products = require('../models/ProductModel')
 const formidable = require('formidable')
 
+// import products
+const csv = require('csv-parser')
+const fs = require('fs')
+
+var https = require('https');
+//Node.js Function to save image from External URL.
+function fetchImage(url, localPath) {
+  var fullUrl = url;
+var file = fs.createWriteStream(localPath);
+var request = https.get(url, function(response) {
+response.pipe(file);
+});
+}
+
 // Route to show all products
 exports.index = async (req, res) => {
   try{
@@ -80,6 +94,68 @@ exports.delete = async (req, res) => {
 
     res.redirect('/dashboard/products')
   }catch(err) {
+    res.status(500).render('503', {error: err})
+  }
+}
+
+// import products
+exports.import = async (req, res) => {
+  res.status(200).render('product/upload', {title: 'Import Products'})
+}
+
+exports.upload = (req, res, next) => {
+
+  try{
+
+    const form = formidable({ multiples: true});
+    
+    form.parse(req, (err, fields, files) => {
+      console.log(files.upload.path)
+      fs.createReadStream(files.upload.path)
+        .pipe(csv())
+        .on('data', (row) => {
+
+          let image_name= Date.now()+'.jpg';
+          let image_path='./public/media/upload/'+image_name;
+          fetchImage(row.images,image_path);
+            const data = new Products(row)
+
+            data.images[1] = image_name
+
+            data.save()
+
+            console.log(data.images['path'])
+        })
+        .on('end', () => {
+            console.log('CSV file successfully processed');
+        })
+
+    }).on('fileBegin', (name, file) => {
+      file.path = './public/media/upload/' + file.name
+    })
+
+
+    
+        res.redirect('/dashboard/products/import')
+
+} catch(e) {
+  console.log(e);
+}
+}
+
+exports.uploadImage = async (req, res, next) => {
+  try{
+    const form = formidable({ multiples: true});
+    
+    form.parse(req, (err, fields, files) => {
+      console.log('upload image')
+
+    }).on('fileBegin', (name, file) => {
+      file.path = './public/media/' + file.name
+    })
+    res.status(200)
+    console.log('success')
+  } catch(err) {
     res.status(500).render('503', {error: err})
   }
 }

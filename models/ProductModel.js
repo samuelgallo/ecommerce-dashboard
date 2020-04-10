@@ -11,7 +11,7 @@ const Product = new mongoose.Schema({
   quantity: Number,
   images: Array
 },{
-  timestamp: true
+  timestamps: true
 })
 
 module.exports = mongoose.model('Product', Product)
