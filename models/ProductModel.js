@@ -10,7 +10,7 @@ const Product = new mongoose.Schema({
   path: String,
   quantity: Number,
   images: Array
-},{
+}, {
   timestamps: true
 })
 

@@ -7,6 +7,7 @@ const upload = require('../config/multer')
 const Dashboard = require('../controllers/DashboardController')
 const Settings = require('../controllers/SettingsController')
 const Products = require('../controllers/ProductsController')
+const Pages = require('../controllers/PagesController')
 
 // Routes
 routes.get('/', Dashboard.index)
@@ -32,9 +33,13 @@ routes.get('/categories', (req, res) => {
   res.status(200).render('catalog/index', {title: 'Category'})
 })
 
-routes.get('/pages', (req, res) => {
-  res.status(200).render('pages/index', {title: 'Products'})
-})
+// Routes Pages
+routes.get('/pages', Pages.index)
+routes.get('/pages/create', Pages.create)
+routes.get('/pages/edit/:id', Pages.edit)
+routes.post('/pages/save', Pages.save)
+routes.post('/pages/save/edit/:id', Pages.save)
+routes.get('/pages/delete/:id', Pages.delete)
 
 routes.get('/customers', (req, res) => {
   res.status(200).render('customer/index', {title: 'Customers'})
