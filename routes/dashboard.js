@@ -8,6 +8,7 @@ const Dashboard = require('../controllers/DashboardController')
 const Settings = require('../controllers/SettingsController')
 const Products = require('../controllers/ProductsController')
 const Pages = require('../controllers/PagesController')
+const Categories = require('../controllers/CategoriesController')
 
 // Routes
 routes.get('/', Dashboard.index)
@@ -15,6 +16,7 @@ routes.get('/', Dashboard.index)
 routes.get('/settings', Settings.index)
 routes.post('/settings/save', upload.single('logo'), Settings.save)
 
+// Products
 routes.get('/products', Products.index)
 routes.get('/products/new', Products.new)
 routes.post('/products/save', Products.save)
@@ -29,20 +31,25 @@ routes.post('/products/upload/image', Products.uploadImage)
 //   res.status(200).render('products', {title: 'Products'})
 // })
 
-routes.get('/categories', (req, res) => {
-  res.status(200).render('catalog/index', {title: 'Category'})
-})
+// Categories
+routes.get('/categories', Categories.index)
+routes.get('/categories/create', Categories.create)
+routes.get('/categories/delete/:id', Categories.delete)
+routes.get('/categories/edit/:id', Categories.edit)
+routes.post('/categories/save', Categories.save)
+routes.post('/categories/save/edit/:id', Categories.save)
+
 
 // Routes Pages
 routes.get('/pages', Pages.index)
 routes.get('/pages/create', Pages.create)
 routes.get('/pages/edit/:id', Pages.edit)
+routes.get('/pages/delete/:id', Pages.delete)
 routes.post('/pages/save', Pages.save)
 routes.post('/pages/save/edit/:id', Pages.save)
-routes.get('/pages/delete/:id', Pages.delete)
 
 routes.get('/customers', (req, res) => {
-  res.status(200).render('customer/index', {title: 'Customers'})
+  res.status(200).render('customer/index', { title: 'Customers' })
 })
 /*
 routes.get('/dashboard/products', (req, res) => {});

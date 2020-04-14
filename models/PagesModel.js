@@ -1,7 +1,7 @@
 const mongoose = require('../config/database')
 
 const Pages = new mongoose.Schema({
-	title: {type: String, required: true},
+	title: { type: String, required: true },
 	content: String,
 	path: String,
 	status: Boolean,
