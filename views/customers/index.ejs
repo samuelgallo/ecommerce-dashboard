@@ -1,0 +1,71 @@
+<%- include('../partials/head'); -%>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../partials/sidebar'); -%>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <%- include('../partials/header'); -%>
+
+      <div class="row">
+        <div class="col-6">
+          <div class="welcome">
+            <h1>Customers</h1>
+          </div>
+        </div>
+        <div class="col-6 align-self-center text-lg-right">
+          <a
+            class="btn btn-success"
+            href="/dashboard/customers/create"
+            role="button"
+            >New Customer</a
+          >
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th width="100">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% customers.forEach(function(customer) { %>
+                <tr>
+                  <td><%= customer.name %></td>
+                  <td><%= customer.email %></td>
+                  <td
+                    class="text-capitalize <%- customer.status =='1' ? 'text-success' : 'text-danger' %>"
+                  >
+                    <%- customer.status =='1' ? 'Enable' : 'Disable' %>
+                  </td>
+                  <td>
+                    <a href="/dashboard/customers/edit/<%= customer._id %>"
+                      >Edit</a
+                    >
+                    |
+                    <a
+                      href="/dashboard/customers/delete/<%= customer._id %>"
+                      onclick="return confirm('Are you sure you want to delete this customer?');"
+                      >Delete</a
+                    >
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <%- include('../partials/copyright'); -%>
+    </main>
+  </div>
+</div>
+<%- include('../partials/footer'); -%>

@@ -1,0 +1,100 @@
+<%- include('../partials/head'); -%>
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../partials/sidebar'); -%>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <%- include('../partials/header'); -%>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="welcome">
+            <h1>New Customer</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <form method="POST" action="/dashboard/customers/save">
+            <div class="form-group row">
+              <label for="name" class="col-sm-12 col-form-label">First Name</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control name" id="name" name="name" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="last_name" class="col-sm-12 col-form-label">Last Name</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control last_name" id="last_name" name="last_name">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="email" class="col-sm-12 col-form-label">Email</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control email" id="email" name="email" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="phone" class="col-sm-12 col-form-label">Phone</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control phone" id="phone" name="phone">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="birthday" class="col-sm-12 col-form-label">Birthday</label>
+              <div class="col-sm-12">
+                <input type="date" class="form-control birthday" id="birthday" name="birthday">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="address" class="col-sm-12 col-form-label">Address</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control address" id="address" name="address">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="status" class="col-sm-12 col-form-label">Status</label>
+              <div class="col-sm-12">
+                <select class="custom-select" id="status" name="status">
+                  <option selected disabled value="">Choose...</option>
+                  <option value="1">Enable</option>
+                  <option value="0">Disable</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="newsletter" class="col-sm-12 col-form-label">newsletter</label>
+              <div class="col-sm-12">
+                <input type="checkbox" class="form-control newsletter" id="newsletter" name="newsletter">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label for="password" class="col-sm-12 col-form-label">Password</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control password" id="password" name="password">
+              </div>
+            </div>
+
+            <div class="form-group row mt-5">
+              <div class="col-sm-12">
+                <button type="submit" class="btn btn-primary"><span data-feather="save"></span> Save</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+      <%- include('../partials/copyright'); -%>
+
+    </main>
+  </div>
+</div>
+
+
+<%- include('../partials/footer'); -%>

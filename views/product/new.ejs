@@ -21,13 +21,13 @@
             <div class="form-group row">
               <label for="name" class="col-sm-12 col-form-label">Name</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="name" name="name" required>
+                <input type="text" class="form-control name" id="name" name="name" required>
               </div>
             </div>
             <div class="form-group row">
               <label for="path" class="col-sm-12 col-form-label">Url</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="path" name="path">
+                <input type="text" class="form-control path" id="path" name="path">
               </div>
             </div>
             <div class="form-group row">
@@ -51,7 +51,8 @@
             <div class="form-group row mb-5">
               <label for="description" class="col-sm-12 col-form-label">Description</label>
               <div class="col-sm-12">
-                <textarea class="form-control d-none" name="description" id="description" cols="30" rows="10"></textarea>
+                <textarea class="form-control d-none" name="description" id="description" cols="30"
+                  rows="10"></textarea>
                 <div id="editor"></div>
                 <div class="clearfix"></div>
               </div>
@@ -96,34 +97,24 @@
   </div>
 </div>
 
-<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=2tmhebveh90johqv0vzxo23yd0e9wjb5267kzgb9qwv3k6ps"></script>
+<script
+  src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=2tmhebveh90johqv0vzxo23yd0e9wjb5267kzgb9qwv3k6ps"></script>
 <script>
-tinymce.init({
-selector: '#description',
-height: 500,
-theme: 'modern',
-plugins: 'print preview searchreplace autolink directionality   visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount  imagetools  contextmenu colorpicker textpattern help',
-toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
-images_upload_url: '/dashboard/products/upload/image',
-  automatic_uploads: true,
-  /* we override default upload handler to simulate successful upload*/
-  images_upload_handler: function (blobInfo, success, failure) {
-    setTimeout(function () {
-      /* no matter what you upload, we will turn it into TinyMCE logo :)*/
-      success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
-    }, 2000);
-  }
-});</script>
-<script>
-  var e = document.getElementById('name');
-  var out = document.getElementById('path');
+  tinymce.init({
+    selector: '#description',
+    height: 500,
+    theme: 'modern',
+    plugins: 'print preview searchreplace autolink directionality   visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount  imagetools  contextmenu colorpicker textpattern help',
+    toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+    images_upload_url: '/dashboard/products/upload/image',
+    automatic_uploads: true,
+    /* we override default upload handler to simulate successful upload*/
+    images_upload_handler: function (blobInfo, success, failure) {
+      setTimeout(function () {
+        /* no matter what you upload, we will turn it into TinyMCE logo :)*/
+        success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+      }, 2000);
+    }
+  });</script>
 
-  e.addEventListener('input', function(event) {
-    window.setTimeout(function() {
-      out.value = event.target.value.toLowerCase().replace(/[^\w\s]/gi, '').replace(/\s/g, '-').replace('--', '-');
-    }, 1);
-  });
-
-  
-</script>
 <%- include('../partials/footer'); -%>
