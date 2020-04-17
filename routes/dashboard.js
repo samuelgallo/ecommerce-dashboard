@@ -9,6 +9,7 @@ const Settings = require('../controllers/SettingsController')
 const Products = require('../controllers/ProductsController')
 const Pages = require('../controllers/PagesController')
 const Categories = require('../controllers/CategoriesController')
+const Customers = require('../controllers/CustomersController')
 
 // Routes
 routes.get('/', Dashboard.index)
@@ -48,18 +49,15 @@ routes.get('/pages/delete/:id', Pages.delete)
 routes.post('/pages/save', Pages.save)
 routes.post('/pages/save/edit/:id', Pages.save)
 
-routes.get('/customers', (req, res) => {
-  res.status(200).render('customer/index', { title: 'Customers' })
-})
-/*
-routes.get('/dashboard/products', (req, res) => {});
-routes.get('/dashboard/product:id', (req, res) => {});
-routes.get('/dashboard/categories', (req, res) => {});
-routes.get('/dashboard/category/:id', (req, res) => {});
-routes.get('/dashboard/configuration', (req, res) => {});
-routes.get('/dashboard/pages', (req, res) => {});
-routes.get('/dashboard/page/:id', (req, res) => {});
+// Customers controller
+routes.get('/customers', Customers.index)
+routes.get('/customers/create', Customers.create)
+routes.get('/customers/edit/:id', Customers.edit)
+routes.get('/customers/delete/:id', Customers.delete)
+routes.post('/customers/save', Customers.save)
+routes.post('/customers/save/edit/:id', Customers.save)
 
+/*
 routes.get('/login', (req, res) => {
   res.render('dashboard/login', {title: 'Login'});
 });

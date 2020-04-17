@@ -8,6 +8,8 @@ const bodyParser = require('body-parser')
 
 const app = express()
 
+const verify = require('./config/auth')
+
 // Configurations express
 app.use(cors())
 app.use(bodyParser.json())
@@ -20,6 +22,10 @@ app.set('view engine', 'ejs')
 
 // Routes
 app.use('/dashboard', require('./routes/dashboard'))
+app.use('/login', require('./routes/login'))
+
+//routes.get('/register', Register.index)
+//routes.post('/register/save', Register.save)
 
 // Server
 const port = process.env.PORT || 3000
