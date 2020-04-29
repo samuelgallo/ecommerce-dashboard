@@ -4,35 +4,38 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "start": "node index.js",
+    "test": "NODE_ENV=development jest",
+    "test:watch": "jest --watch",
+    "start": "NODE_ENV=production pm2 start index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "scss": "node-sass --watch --recursive --output-style compressed ./public/scss -o ./public/css",
     "front": "npm run dev & npm run scss"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Samuel Gallo <samuel@samuelgallo.com>",
   "license": "ISC",
   "devDependencies": {
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "superagent": "^5.2.2"
   },
   "dependencies": {
     "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "csv-parser": "^2.3.2",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "fast-csv": "^4.1.3",
     "formidable": "^1.2.2",
-    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.2",
     "multer": "^1.4.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "pm2": "^4.3.0"
   },
   "jest": {
     "testEnvironment": "node",

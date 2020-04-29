@@ -57,6 +57,7 @@ routes.get('/customers/delete/:id', Customers.delete)
 routes.post('/customers/save', Customers.save)
 routes.post('/customers/save/edit/:id', Customers.save)
 
+
 /*
 routes.get('/login', (req, res) => {
   res.render('dashboard/login', {title: 'Login'});

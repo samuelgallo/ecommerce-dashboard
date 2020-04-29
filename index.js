@@ -4,11 +4,11 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const http = require('http')
 const bodyParser = require('body-parser')
-
+const session = require('express-session')
 
 const app = express()
 
-const verify = require('./config/auth')
+const auth = require('./config/auth')
 
 // Configurations express
 app.use(cors())
@@ -19,10 +19,25 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+app.use(session({
+  name: 'gR3en',
+  secret: '@fR-7RlWOY1bxnXOXeggoubdpe$2GNSei}Inf$tu',
+  resave: true,
+  saveUninitialized: false,
+  cookie: {
+    secure: (process.env.NODE_ENV === 'development') ? false : true,
+    expires: 604800,
+    maxAge: 1209600000 //two weeks in milliseconds
+  }
+}))
+
+app.disable('x-powered-by')
 
 // Routes
+//app.use('/', require('./routes/dashboard'))
 app.use('/dashboard', require('./routes/dashboard'))
 app.use('/login', require('./routes/login'))
+app.use('/logout', require('./routes/logout'))
 
 //routes.get('/register', Register.index)
 //routes.post('/register/save', Register.save)

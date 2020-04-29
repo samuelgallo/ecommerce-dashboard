@@ -14,4 +14,8 @@ const Customers = new mongoose.Schema({
   timestamps: true
 })
 
+Customers.virtual('fullname').get(() => {
+  return this.name + ' ' + this.last_name
+})
+
 module.exports = mongoose.model('Customers', Customers)
