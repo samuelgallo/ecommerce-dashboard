@@ -9,6 +9,3 @@ const Login = new mongoose.Schema({
 })
 
 module.exports = mongoose.model('Login', Login)
-
-
-

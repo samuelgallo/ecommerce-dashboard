@@ -35,7 +35,7 @@ app.disable('x-powered-by')
 
 // Routes
 //app.use('/', require('./routes/dashboard'))
-app.use('/dashboard', require('./routes/dashboard'))
+app.use('/dashboard', auth, require('./routes/dashboard'))
 app.use('/login', require('./routes/login'))
 app.use('/logout', require('./routes/logout'))
 
