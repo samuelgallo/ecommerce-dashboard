@@ -26,7 +26,7 @@ app.use(session({
   resave: true,
   saveUninitialized: false,
   cookie: {
-    secure: (process.env.NODE_ENV === 'development') ? false : true,
+    secure: false,
     expires: 604800,
     maxAge: 1209600000 //two weeks in milliseconds
   }

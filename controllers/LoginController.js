@@ -25,7 +25,7 @@ exports.auth = async (req, res, next) => {
       if (!user) {
         res.render('login', { title: 'Login', message: 'Invalid login or password' })
       } else {
-        user.comparePassword(req.body.password, function (err, isMatch) {
+        await user.comparePassword(req.body.password, function (err, isMatch) {
           if (err) {
             res.render('login', { title: 'Login', message: 'Invalid password' })
           } else {
