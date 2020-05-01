@@ -25,20 +25,20 @@ exports.auth = async (req, res, next) => {
       if (!user) {
         res.render('login', { title: 'Login', message: 'Invalid login or password' })
       } else {
-        if (req.body.password === user.password) {
-          user = {
-
-            email: user.email,
-            password: user.password,
-            name: user.name,
-            id: user._id
+        user.comparePassword(req.body.password, function (err, isMatch) {
+          if (err) {
+            res.render('login', { title: 'Login', message: 'Invalid password' })
+          } else {
+            user = {
+              email: user.email,
+              password: user.password,
+              name: user.name,
+              id: user._id
+            }
+            req.session.user = user
+            res.redirect('/dashboard')
           }
-          req.session.user = user
-          res.redirect('/dashboard')
-          //console.log(user)
-        } else {
-          res.render('login', { title: 'Login', message: 'Invalid password' })
-        }
+        })
       }
     })
 
@@ -46,15 +46,3 @@ exports.auth = async (req, res, next) => {
     res.status(500).render('503', { message: 'Can\'t load login' })
   }
 }
-
-
-
-// app.get('/login', function (req, res) {
-//   if (!req.query.username || !req.query.password) {
-//     res.send('login failed');    
-//   } else if(req.query.username === "amy" || req.query.password === "amyspassword") {
-//     req.session.user = "amy";
-//     req.session.admin = true;
-//     res.send("login success!");
-//   }
-// });

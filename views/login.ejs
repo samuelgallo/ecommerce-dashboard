@@ -12,6 +12,8 @@
         <% } %>
 
       <form method="POST" action="/login/auth">
+        <a href="/register" class="btn btn-dark  my-5">Register</a>
+        <span>Or</span>
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
@@ -22,7 +24,8 @@
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        
+        <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Sign in</button>
         </form>
 
       <%- include('partials/copyright'); -%>

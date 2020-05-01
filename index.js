@@ -19,6 +19,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')))
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+// Set session
 app.use(session({
   name: 'gR3en',
   secret: '@fR-7RlWOY1bxnXOXeggoubdpe$2GNSei}Inf$tu',
@@ -31,6 +32,7 @@ app.use(session({
   }
 }))
 
+// Disable for security questions
 app.disable('x-powered-by')
 
 // Routes
@@ -38,9 +40,7 @@ app.disable('x-powered-by')
 app.use('/dashboard', auth, require('./routes/dashboard'))
 app.use('/login', require('./routes/login'))
 app.use('/logout', require('./routes/logout'))
-
-//routes.get('/register', Register.index)
-//routes.post('/register/save', Register.save)
+app.use('/register', require('./routes/register'))
 
 // Server
 const port = process.env.PORT || 3000

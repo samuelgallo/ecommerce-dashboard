@@ -1,3 +1,5 @@
+const Register = require('../models/RegisterModel')
+
 exports.index = async (req, res) => {
   try {
     res.status(200).render('register', { title: 'Register' })
@@ -8,8 +10,17 @@ exports.index = async (req, res) => {
 
 exports.save = async (req, res) => {
   try {
+    const user = await Register.findOne({ email: req.body.email })
+    const data = new Register(req.body)
+    console.log(user)
+    if (user) {
+      res.redirect('/register')
+    } else {
+      await data.save()
+      res.redirect('/login')
+    }
 
-    res.redirect('/dashboard')
+
   } catch (err) {
     res.status(500).render('503', { message: 'Can\'t register' })
   }

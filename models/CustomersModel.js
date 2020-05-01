@@ -8,7 +8,7 @@ const Customers = new mongoose.Schema({
   phone: String,
   birthday: String,
   newsletter: String,
-  password: String,
+  password: { type: String, required: true },
   address: Array,
   status: Boolean
 }, {
@@ -19,16 +19,24 @@ Customers.virtual('fullname').get(() => {
   return this.name + ' ' + this.last_name
 })
 
-Customers.pre("save", function (next) {
-  if (!this.isModified("password")) {
+Customers.pre('save', function (next) {
+  if (!this.isModified('password')) {
     return next()
   }
   this.password = bcrypt.hashSync(this.password, 10)
   next()
 })
 
-Customers.methods.comparePassword = function (plaintext, callback) {
-  return callback(null, bcrypt.compareSync(plaintext, this.password));
-};
+Customers.pre('updateOne', function (next) {
+  if (!this._update.$set.password) {
+    return next()
+  }
+  this._update.$set.password = bcrypt.hashSync(this._update.$set.password, 10)
+  next()
+})
+
+Customers.methods.comparePassword = function (customerPassword, callback) {
+  return callback(null, bcrypt.compareSync(customerPassword, this.password))
+}
 
 module.exports = mongoose.model('Customers', Customers)
