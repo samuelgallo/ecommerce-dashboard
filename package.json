@@ -6,7 +6,7 @@
   "scripts": {
     "test": "NODE_ENV=development jest",
     "test:watch": "jest --watch",
-    "start": "NODE_ENV=production pm2 start index.js",
+    "start": "node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "scss": "node-sass --watch --recursive --output-style compressed ./public/scss -o ./public/css",
     "front": "npm run dev & npm run scss"
