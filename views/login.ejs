@@ -5,20 +5,27 @@
    
 
     <main role="main" class="col-md-4 ml-sm-auto col-lg-4 px-4 mt-5">
+      <% if (typeof message !== 'undefined') { %>
+        <div class="alert alert-success" role="alert">
+          <%= message&&message %>
+        </div>
+        <% } %>
 
-
-      <form class="form-signin" mothod="POST" action="/dashboard/login">
+      <form method="POST" action="/login/auth">
+        <a href="/register" class="btn btn-dark  my-5">Register</a>
+        <span>Or</span>
         <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+        <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox mb-3">
+        <input type="text" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+        <div class="checkbox mb-3 d-none">
           <label>
             <input type="checkbox" value="remember-me"> Remember me
           </label>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        
+        <button class="btn btn-lg btn-primary btn-block mt-5" type="submit">Sign in</button>
         </form>
 
       <%- include('partials/copyright'); -%>

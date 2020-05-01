@@ -29,8 +29,8 @@ exports.save = async (req, res) => {
       Customers.updateOne({ _id: req.params.id }, { $set: data }).exec()
     } else {
       if (user) {
-        const salt = await bcrypt.genSalt(10)
-        data.password = await bcrypt.hash(data.password, salt)
+        // const salt = await bcrypt.genSalt(10)
+        // data.password = await bcrypt.hash(data.password, salt)
         await data.save()
       } else {
         res.status(200).render('customers/create', { title: 'Create New Customer', message: 'This user already exisits' })
