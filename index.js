@@ -36,7 +36,7 @@ app.use(session({
 app.disable('x-powered-by')
 
 // Routes
-//app.use('/', require('./routes/dashboard'))
+app.use('/', require('./routes/index'))
 app.use('/dashboard', auth, require('./routes/dashboard'))
 app.use('/login', require('./routes/login'))
 app.use('/logout', require('./routes/logout'))
