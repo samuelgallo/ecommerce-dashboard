@@ -5,12 +5,7 @@
   "scripts": {
     "test": "NODE_ENV=development jest",
     "test:watch": "jest --watch",
-<<<<<<< HEAD
     "start": "node index.js",
-=======
-    "start": "pm2 start index.js --env production",
-    "stop": "pm2 stop index.js",
->>>>>>> master
     "dev": "NODE_ENV=development nodemon index.js",
     "scss": "node-sass --watch --recursive --output-style compressed ./public/scss -o ./public/css",
     "front": "npm run dev & npm run scss"
