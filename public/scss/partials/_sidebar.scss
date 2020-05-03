@@ -1,32 +1,31 @@
-.sidebar{
+.sidebar {
   background: #192a56;
   padding: 15px;
-  flex: 0 0 16%;
-  max-width: 16%;
-  padding-left: 0;
 
-  &-sticky{
-    height: 100vh;
+  &-sticky {
+    @media (min-width: 1200px) {
+      height: 100vh;
+    }
   }
 
-  .logo{
+  .logo {
     font-size: 1.4rem;
     color: #fff;
     margin-bottom: 2rem;
     padding-left: 15px;
   }
 
-  ul{
+  ul {
     list-style: none;
   }
 
-  a{
+  a {
     color: #7f8fa6;
     text-decoration: none;
     display: block;
-    padding: .6rem 1.5rem;
-    transition: all ease-in-out .2s;
-    &:hover{
+    padding: 0.6rem 1.5rem;
+    transition: all ease-in-out 0.2s;
+    &:hover {
       color: #fff;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
@@ -34,7 +33,7 @@
     }
   }
 
-  &-links-bottom{
+  &-links-bottom {
     margin-top: auto;
     margin-bottom: 2rem;
   }

@@ -12,6 +12,7 @@ exports.index = async (req, res) => {
 
 exports.create = async (req, res) => {
   try {
+    // get all products to show and select in a category
     const dataProducts = await Products.find()
     res.status(200).render('categories/create', { title: 'Create New Category', products: dataProducts })
   } catch (err) {
@@ -22,6 +23,8 @@ exports.create = async (req, res) => {
 exports.save = async (req, res) => {
   try {
     const data = new Categories(req.body)
+
+    // if have id update else save a new
     if (req.params.id) {
       data._id = req.params.id
       Categories.updateOne({ _id: req.params.id }, { $set: data }).exec()
@@ -36,6 +39,7 @@ exports.save = async (req, res) => {
 
 exports.edit = async (req, res) => {
   try {
+    // edit by id
     const data = await Categories.findOne({ _id: req.params.id })
     const dataProducts = await Products.find()
 
@@ -47,6 +51,8 @@ exports.edit = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
+
+    // delte by id
     const id = await req.params.id
     Categories.deleteOne({ _id: id }).exec()
     res.redirect('/dashboard/categories')
