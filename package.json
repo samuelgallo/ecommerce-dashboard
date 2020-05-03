@@ -1,7 +1,6 @@
 {
   "name": "ecommerce-dashboard",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=development jest",
@@ -13,7 +12,7 @@
     "front": "npm run dev & npm run scss"
   },
   "author": "Samuel Gallo <samuel@samuelgallo.com>",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "jest": "^25.1.0",
     "nodemon": "^2.0.2",

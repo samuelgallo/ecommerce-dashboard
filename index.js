@@ -8,6 +8,7 @@ const session = require('express-session')
 
 const app = express()
 
+// Auth middleware
 const auth = require('./config/auth')
 
 // Configurations express
@@ -46,4 +47,5 @@ app.use('/register', require('./routes/register'))
 const port = process.env.PORT || 3000
 const server = http.createServer(app)
 
+// Running server
 server.listen(port, () => console.log(`Server running on port ${port} - mode: ${process.env.NODE_ENV}`))

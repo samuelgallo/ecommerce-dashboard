@@ -1,15 +1,36 @@
-<h3>Run NPM</h3>
-If you want to run only the code based on npm follow next steps:
+# Simple ecommerce dashboard
 
-```
-$ npm install
-$ npm run dev
-```
+Node.js, Express, Mongoose (MongoDB), EJS
 
-<h3>Run Docker Compose</h3>
+## Installation
 
-```
-$ docker-compose up
+```bash
+npm install
 ```
 
-<h4>localhost:3000/dashboard</h4>
+## Usage
+
+```bash
+npm run dev
+```
+
+## Docker Compose
+
+Run with Docker
+
+```bash
+docker-compose up
+```
+
+[localhost:3000/dashboard](localhost:3000/dashboard)
+
+## Online demo
+
+[Demo](https://still-mountain-62095.herokuapp.com/)
+Email: admin
+Password: admin
+
+### Specifications
+
+Production server running with pm2 to to keep application alive forever
+Security login using bcrypt and Express session
