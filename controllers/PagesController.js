@@ -2,6 +2,7 @@ const Pages = require('../models/PagesModel')
 
 exports.index = async (req, res) => {
   try {
+    // get all pages
     const data = await Pages.find()
     res.status('200').render('pages/index', { title: 'Pages', pages: data })
   } catch (err) {
@@ -19,6 +20,7 @@ exports.create = async (req, res) => {
 
 exports.edit = async (req, res) => {
   try {
+    // get page by id
     const data = await Pages.findOne({ _id: req.params.id })
     res.status(200).render('pages/edit', { title: 'Edit Page', pages: data })
   } catch (err) {
@@ -29,6 +31,8 @@ exports.edit = async (req, res) => {
 exports.save = async (req, res) => {
   try {
     const fields = new Pages(req.body)
+
+    // checking of the page exists to update, else save a new page
     if (req.params.id) {
       fields._id = req.params.id
       Pages.updateOne({ _id: req.params.id }, { $set: fields }).exec()
@@ -43,6 +47,8 @@ exports.save = async (req, res) => {
 
 exports.delete = async (req, res) => {
   try {
+
+    // delete by id
     const id = await req.params.id
     Pages.deleteOne({ _id: id }).exec()
 

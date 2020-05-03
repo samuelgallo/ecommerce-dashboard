@@ -15,6 +15,7 @@ exports.auth = async (req, res, next) => {
       if (!user) {
         res.render('login', { title: 'Login', message: 'Invalid login or password' })
       } else {
+        // checking if password are the same
         user.comparePassword(req.body.password, function (err, isMatch) {
           if (err) {
             res.render('login', { title: 'Login', message: 'Invalid password' })
@@ -25,6 +26,7 @@ exports.auth = async (req, res, next) => {
               name: user.name,
               id: user._id
             }
+            // setting session
             req.session.user = user
             res.redirect('/dashboard')
           }

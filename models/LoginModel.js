@@ -9,6 +9,7 @@ const Login = new mongoose.Schema({
   collection: 'customers'
 })
 
+// Compare input password with db password
 Login.methods.comparePassword = function (customerPassword, callback) {
   return callback(null, bcrypt.compareSync(customerPassword, this.password))
 }

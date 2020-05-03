@@ -1,6 +1,7 @@
 const express = require('express')
 const routes = express.Router()
 
+// Destroy session
 routes.get('/', (req, res) => {
   req.session.destroy((err) => {
     if (err) {

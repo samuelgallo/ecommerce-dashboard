@@ -15,10 +15,12 @@ const Customers = new mongoose.Schema({
   timestamps: true
 })
 
+// Getting full name
 Customers.virtual('fullname').get(() => {
   return this.name + ' ' + this.last_name
 })
 
+// Before save use bcrypt do encrypt the password
 Customers.pre('save', function (next) {
   if (!this.isModified('password')) {
     return next()
@@ -27,6 +29,7 @@ Customers.pre('save', function (next) {
   next()
 })
 
+// Before update use bcrypt do encrypt the password
 Customers.pre('updateOne', function (next) {
   if (!this._update.$set.password) {
     return next()
@@ -35,6 +38,7 @@ Customers.pre('updateOne', function (next) {
   next()
 })
 
+// Compare input password with db password
 Customers.methods.comparePassword = function (customerPassword, callback) {
   return callback(null, bcrypt.compareSync(customerPassword, this.password))
 }

@@ -8,10 +8,12 @@ const Register = new mongoose.Schema({
   password: { type: String, required: true },
   status: { type: Boolean, default: true }
 }, {
+  // getting data from customers collection
   collection: 'customers',
   timestamps: true
 })
 
+// Before sabe use bcrypt do encrypt the password
 Register.pre('save', function (next) {
   if (!this.isModified('password')) {
     return next()
