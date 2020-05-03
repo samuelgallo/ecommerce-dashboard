@@ -26,11 +26,11 @@ docker-compose up
 
 ## Online demo
 
-[Demo](https://still-mountain-62095.herokuapp.com/). 
-Email: admin. 
-Password: admin. 
+[Demo](https://still-mountain-62095.herokuapp.com/)\
+Email: admin\
+Password: admin\
 
 ### Specifications
 
-Production server running with pm2 to to keep application alive forever  
+Production server running with pm2 to to keep application alive forever\
 Security login using bcrypt and Express session
