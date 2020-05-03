@@ -28,7 +28,7 @@ docker-compose up
 
 [Demo](https://still-mountain-62095.herokuapp.com/)\
 Email: admin\
-Password: admin\
+Password: admin
 
 ### Specifications
 
