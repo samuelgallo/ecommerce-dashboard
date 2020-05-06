@@ -39,7 +39,7 @@ exports.new = async (req, res) => {
 // Route to save a new product
 exports.save = async (req, res) => {
   try {
-    const form = formidable({ multiples: true });
+    const form = formidable({ multiples: true })
 
     form.parse(req, (err, fields, files) => {
       const data = new Products(fields)

@@ -21,6 +21,7 @@ npm-debug.log
 .idea
 .env
 *.csv
+/public/media
 
 # Ignore Images
 *.jpg

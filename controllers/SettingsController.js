@@ -1,7 +1,5 @@
-const fs = require('fs')
-
-// Models
 const Settings = require('../models/Settings')
+const formidable = require('formidable')
 
 exports.index = async (req, res) => {
   try {
@@ -15,31 +13,42 @@ exports.index = async (req, res) => {
 exports.save = async (req, res) => {
 
   try {
-    const data = new Settings(req.body)
-
     // checking if exists data in db
     const getFirstData = await Settings.findOne()
 
-    // if have input image save that, else not change image
-    if (req.file) {
-      data.logo = await req.file
-    } else {
-      data.logo = await getFirstData.logo
-    }
+    var form = new formidable.IncomingForm()
 
-    // if already has data only update, else save new data
-    if (getFirstData) {
-      data._id = await getFirstData._id
+    form.parse(req, (err, fields, files) => {
+      const data = new Settings(fields)
 
-      Settings.updateOne(data).exec()
-    } else {
-      data.save()
-    }
+      // if have input image save that, else not change image
+      if (files.logo.name != '') {
+        data.logo = files.logo
+      } else {
+        data.logo = getFirstData.logo
+      }
 
-    res.redirect('/dashboard/settings')
+      // if already has data only update, else save new data
+      if (getFirstData) {
+        data._id = getFirstData._id
+
+        Settings.updateOne(data).exec()
+      } else {
+        data.save()
+      }
+
+      res.redirect('/dashboard/settings')
+
+    }).on('fileBegin', (name, file) => {
+      if (file.name != '') {
+        file.path = './public/media/' + file.name
+      }
+    })
+
+
 
   } catch (err) {
-    res.render('503')
+    res.render('503', { message: `can't save this configurations` })
   }
 }
 

@@ -28,6 +28,7 @@ exports.auth = async (req, res, next) => {
             }
             // setting session
             req.session.user = user
+            res.locals.user = user
             res.redirect('/dashboard')
           }
         })
