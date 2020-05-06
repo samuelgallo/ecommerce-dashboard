@@ -16,13 +16,13 @@ exports.save = async (req, res) => {
     // checking if exists data in db
     const getFirstData = await Settings.findOne()
 
-    const form = formidable({ multiples: false, uploadDir: __dirname + '/tmp', })
+    var form = new formidable.IncomingForm()
 
     form.parse(req, (err, fields, files) => {
       const data = new Settings(fields)
 
       // if have input image save that, else not change image
-      if (files) {
+      if (files.logo.name != '') {
         data.logo = files.logo
       } else {
         data.logo = getFirstData.logo
@@ -40,7 +40,9 @@ exports.save = async (req, res) => {
       res.redirect('/dashboard/settings')
 
     }).on('fileBegin', (name, file) => {
-      file.path = './public/media/' + file.name
+      if (file.name != '') {
+        file.path = './public/media/' + file.name
+      }
     })
 
 
