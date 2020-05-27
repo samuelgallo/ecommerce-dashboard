@@ -1,10 +1,9 @@
 {
   "name": "ecommerce-dashboard",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=development jest",
-    "test:watch": "jest --watch",
+    "test:watch": "NODE_ENV=development jest --watch",
     "start": "pm2 start index.js --env production",
     "stop": "pm2 stop index.js",
     "dev": "NODE_ENV=development nodemon index.js",

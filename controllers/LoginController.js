@@ -13,12 +13,12 @@ exports.auth = async (req, res, next) => {
   try {
     Login.findOne({ email: req.body.email }, (err, user) => {
       if (!user) {
-        res.render('login', { title: 'Login', message: 'Invalid login or password' })
+        res.status(401).render('login', { title: 'Login', message: 'Invalid login or password' })
       } else {
         // checking if password are the same
         user.comparePassword(req.body.password, function (err, isMatch) {
           if (err) {
-            res.render('login', { title: 'Login', message: 'Invalid password' })
+            res.status(401).render('login', { title: 'Login', message: 'Invalid password' })
           } else {
             user = {
               email: user.email,

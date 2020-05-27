@@ -1,11 +1,17 @@
-const app = require('../index')
-const supertest = require('supertest')
-const request = supertest(app)
+const request = require('supertest')
+const app = require('../config/app')
 
-it('gets the test endpoint', async done => {
-  const response = await request.get('/')
-  console.log(response)
-  expect(response.status).toBe(200)
-  //expect(response.body.message).toBe('pass!')
-  done()
+// test('Should login', async () => {
+//   await request(app).get('/login').expect(200)
+// })
+
+//test('Shouldt login', async () => {
+//  await request(app).post('/login/auth').expect(401)
+//})
+
+test('success login', async () => {
+  await request(app).post('/login/auth').send({
+    email: 'admin',
+    password: 'adminz'
+  }).expect(200)
 })
