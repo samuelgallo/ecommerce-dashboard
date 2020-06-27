@@ -10,7 +10,8 @@ const Customers = new mongoose.Schema({
   newsletter: String,
   password: { type: String, required: true },
   address: Array,
-  status: Boolean
+  status: Boolean,
+  role: String
 }, {
   timestamps: true
 })
