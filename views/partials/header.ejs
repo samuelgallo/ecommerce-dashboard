@@ -1,13 +1,5 @@
 <div class="row pt-2 mb-3">
   <div class="col-6">
-    <div class="header-search d-none">
-      <form action="">
-        <button class="button-icon" type="submit">
-          <i data-feather="search"></i>
-        </button>
-        <input type="text" class="input search" name="search" placeholder="Search">
-      </form>
-    </div>
 
   </div>
   <div class="col-6 d-flex justify-content-end">
@@ -18,7 +10,7 @@
           <%- user.name %>
         </button>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">My Account</a>
+          <a class="dropdown-item" href="/dashboard/customers/edit/<%- user._id %>">My Account</a>
           <a class="dropdown-item" href="/logout">Logout</a>
         </div>
       </div>

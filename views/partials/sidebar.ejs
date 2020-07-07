@@ -37,7 +37,7 @@
       </li>
       
     </ul>
-
+    <% if(user&&user.role == 'admin'){ %>
     <ul class="nav flex-column sidebar-links sidebar-links-bottom">
       <li class="nav-item">
         <a class="nav-link" href="/dashboard/settings">
@@ -45,5 +45,6 @@
         </a>
       </li>
     </ul>
+    <% } %>
   </div>
 </nav>

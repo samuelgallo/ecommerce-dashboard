@@ -2,19 +2,17 @@
 
 <div class="container">
   <div class="row">
-   
-
     <main role="main" class="col-md-4 ml-sm-auto col-lg-4 px-4 mt-5">
       <% if (typeof message !== 'undefined') { %>
         <div class="alert alert-success" role="alert">
           <%= message&&message %>
         </div>
         <% } %>
-
-      <form method="POST" action="/login/auth">
-        <a href="/register" class="btn btn-dark  my-5">Register</a>
-        <span>Or</span>
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <h1 class="text-center text-xl-left d-block">Dashboard Ecommerce</h1>
+      <form method="POST" action="/login/auth" class="mb-5">
+        <a href="/register" class="btn btn-dark  my-4 w-100">Register</a>
+        <span class="my-2 d-block text-center">Or</span>
+        <h1 class="h3 mb-3 font-weight-normal text-center d-block">Sign in</h1>
         <label for="inputEmail" class="sr-only">Email address</label>
         <input type="text" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>

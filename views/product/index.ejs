@@ -14,8 +14,10 @@
           </div>
         </div>
         <div class="col-6 align-self-center text-lg-right">
-          <a class="btn btn-link" href="/dashboard/products/import" role="button">Import</a>
-          <a class="btn btn-success" href="/dashboard/products/new" role="button">New Product</a>
+          <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
+            <a class="btn btn-link" href="/dashboard/products/import" role="button">Import</a>
+            <a class="btn btn-success" href="/dashboard/products/new" role="button">New Product</a>
+          <% } %>
         </div>
       </div>
 
@@ -30,7 +32,9 @@
               <th>Name</th>
               <th>Price</th>
               <th>Status</th>
+              <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
               <th width="100">Action</th>
+              <% } %>
             </tr>
           </thead>
           <tbody>
@@ -42,8 +46,15 @@
                 <td><%= product.name %></td>
                 <td><%- product.price ? '$' : '' %><%= product.price %></td>
                 <td class="text-capitalize <%- product.status =='enable' ? 'text-success' : 'text-danger' %>"><%= product.status %></td>
-                <td><a href="/dashboard/products/edit/<%= product._id %>">Edit</a> | <a href="/dashboard/products/delete/<%= product._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></td>
-              </tr>
+                <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
+                <td>
+                  <a href="/dashboard/products/edit/<%= product._id %>">Edit</a> 
+                  <% if(user&&user.role == 'admin'){ %>
+                  | <a href="/dashboard/products/delete/<%= product._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                  <% } %>
+                </td>
+                  <% } %>
+                </tr>
             <% }); %>
 
           </tbody>
