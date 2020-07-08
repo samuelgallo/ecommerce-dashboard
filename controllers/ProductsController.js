@@ -1,5 +1,8 @@
 const Products = require('../models/ProductModel')
 const formidable = require('formidable')
+const downloadTool = require('../config/download')
+//const json2csv = require('json2csv').parse;
+//const { parse } = require('json2csv');
 
 // import products
 const csv = require('csv-parser')
@@ -156,6 +159,17 @@ exports.uploadImage = async (req, res, next) => {
     })
     res.status(200)
     console.log('success')
+  } catch (err) {
+    res.status(500).render('503', { error: err })
+  }
+}
+
+exports.download = async (req, res) => {
+  const data = await Products.find()
+
+  const fields = ['sku', 'name', 'status', 'description', 'special_price', 'price', 'path', 'quantity', 'images']
+  try {
+    await downloadTool(res, 'products', data, fields)
   } catch (err) {
     res.status(500).render('503', { error: err })
   }

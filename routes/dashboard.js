@@ -25,6 +25,7 @@ routes.get('/products/delete/:id', Products.delete)
 routes.get('/products/import', Products.import)
 routes.post('/products/upload', Products.upload)
 routes.post('/products/upload/image', Products.uploadImage)
+routes.get('/products/download', Products.download)
 
 // Categories Routes
 routes.get('/categories', Categories.index)
