@@ -4,10 +4,14 @@ const bcrypt = require('bcrypt')
 const Register = new mongoose.Schema({
   name: { type: String, required: true },
   last_name: { type: String, required: true },
-  email: { type: String, lowercase: true, trim: true, required: true },
-  password: { type: String, required: true },
+  email: { type: String, lowercase: true, trim: true, required: true, createIndexes: false },
+  password: { type: String },
   status: { type: Boolean, default: true },
-  role: { type: String, default: 'assistant' }
+  role: { type: String, default: 'assistant' },
+  passport_id: String,
+  token: String,
+  picture: String,
+  provider: String
 }, {
   // getting data from customers collection
   collection: 'customers',

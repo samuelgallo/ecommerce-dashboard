@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const passport = require('passport')
 
 const app = express()
 
@@ -16,6 +17,9 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use('/public', express.static(path.join(__dirname, '../public')))
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.set('views', path.join(__dirname, '../views'))
 app.set('view engine', 'ejs')
 
@@ -41,5 +45,6 @@ app.use('/dashboard', auth, require('../routes/dashboard'))
 app.use('/login', require('../routes/login'))
 app.use('/logout', require('../routes/logout'))
 app.use('/register', require('../routes/register'))
+app.use('/auth', require('../routes/auth'))
 
 module.exports = app
