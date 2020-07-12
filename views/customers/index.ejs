@@ -33,6 +33,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Role</th>
                   <th>Status</th>
                   <% if(user&&user.role == 'admin'){ %>
                   <th width="100">Action</th>
@@ -44,6 +45,7 @@
                 <tr>
                   <td><%= customer.name %></td>
                   <td><%= customer.email %></td>
+                  <td><%= customer.role %></td>
                   <td
                     class="text-capitalize <%- customer.status =='1' ? 'text-success' : 'text-danger' %>"
                   >
