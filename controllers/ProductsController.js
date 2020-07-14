@@ -75,7 +75,10 @@ exports.save = async (req, res) => {
 
       if (file.name != '') {
 
-        if (process.env.NODE_ENV == 'production') {
+        if (process.env.NODE_ENV == 'dev') {
+          file.path = './public/media/' + dataNow + '-' + file.name
+        } else {
+
           file.on('error', e => this._error(e))
 
           file.open = function () {
@@ -100,14 +103,11 @@ exports.save = async (req, res) => {
             })
             this._writeStream.end()
           }
-        } else {
-          file.path = '/public/media/' + dataNow + '-' + file.name
         }
 
       }
 
     })
-
 
     // continue execution here
     function onUpload(err, res) {
@@ -170,7 +170,7 @@ exports.upload = (req, res, next) => {
 
   try {
 
-    const form = formidable({ multiples: true });
+    const form = formidable({ multiples: true })
 
     form.parse(req, (err, fields, files) => {
       console.log(files.upload.path)
@@ -195,6 +195,7 @@ exports.upload = (req, res, next) => {
 
     }).on('fileBegin', (name, file) => {
       file.path = './public/media/upload/' + file.name
+
     })
 
     res.redirect('/dashboard/products/import')
@@ -206,7 +207,7 @@ exports.upload = (req, res, next) => {
 
 exports.uploadImage = async (req, res, next) => {
   try {
-    const form = formidable({ multiples: true });
+    const form = formidable({ multiples: true })
 
     form.parse(req, (err, fields, files) => {
       console.log('upload image')

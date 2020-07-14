@@ -62,7 +62,11 @@ exports.save = async (req, res) => {
     }).on('fileBegin', (name, file) => {
       if (file.name != '') {
 
-        if (process.env.NODE_ENV == 'production') {
+        if (process.env.NODE_ENV == 'dev') {
+          file.path = './public/media/' + dataNow + '-' + file.name
+        } else {
+
+
           file.on('error', e => this._error(e))
 
           file.open = function () {
@@ -87,8 +91,6 @@ exports.save = async (req, res) => {
             })
             this._writeStream.end()
           }
-        } else {
-          file.path = './public/media/' + dataNow + '-' + file.name
         }
 
 
