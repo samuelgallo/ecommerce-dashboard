@@ -3,6 +3,7 @@ const AWS = require('aws-sdk')
 const formidable = require('formidable')
 const downloadTool = require('../config/download')
 var https = require('https')
+const request = require('request')
 
 // import products
 const csv = require('csv-parser')
@@ -14,7 +15,8 @@ const Products = require('../models/ProductModel')
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  Bucket: process.env.AWS_BUCKET
 })
 
 //Node.js Function to save image from External URL.
@@ -23,6 +25,28 @@ function fetchImage(url, localPath) {
   var file = fs.createWriteStream(localPath);
   var request = https.get(url, function (response) {
     response.pipe(file)
+  });
+}
+
+function UploadFromUrlToS3(url, destPath) {
+  return new Promise((resolve, reject) => {
+    request({
+      url: url,
+      encoding: null
+    }, function (err, res, body) {
+      if (err) {
+        reject(err)
+      }
+      var objectParams = {
+        ACL: 'public-read',
+        Bucket: process.env.AWS_BUCKET,
+        ContentType: res.headers['content-type'],
+        ContentLength: res.headers['content-length'],
+        Key: destPath,
+        Body: body
+      }
+      resolve(s3.putObject(objectParams).promise())
+    });
   });
 }
 
@@ -60,7 +84,7 @@ exports.save = async (req, res) => {
       data.images = files.images
       data.images[0].name = dataNow + '-' + files.images.name
       if (process.env.NODE_ENV == 'production') {
-        data.images[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/' + files.images.name
+        data.images[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + files.images.name
       } else {
         data.images[0].path = '/public/media/' + files.images.name
       }
@@ -91,7 +115,7 @@ exports.save = async (req, res) => {
             s3.upload({
               ACL: 'public-read',
               Bucket: process.env.AWS_BUCKET,
-              Key: dataNow + '-' + file.name,
+              Key: 'products/' + dataNow + '-' + file.name,
               Body: this._writeStream
             }, onUpload)
           }
@@ -175,7 +199,7 @@ exports.upload = (req, res, next) => {
     var dataNow = Date.now()
 
     form.parse(req, (err, fields, files) => {
-      console.log(files.upload.path)
+      //console.log(files.upload.path)
       // fs.createReadStream('https://dashboard-ecommerce.s3.amazonaws.com/csv/1594728960722-products1594697894753.csv')
       //   .pipe(csv())
       //   .on('data', (row) => {
@@ -236,7 +260,7 @@ exports.upload = (req, res, next) => {
     })
     // continue execution here
     function onUpload(err, res) {
-      err ? console.log('error:\n', err) : console.log('response:\n', res)
+      //err ? console.log('error:\n', err) : console.log('response:\n', res)
 
       const params = { Bucket: res.Bucket, Key: res.Key }
       try {
@@ -244,9 +268,24 @@ exports.upload = (req, res, next) => {
 
         file.pipe(csv())
           .on('data', function (row) {
-            console.log(row)
+            //console.log(row)
             const data = new Products(row)
+            var fileName = row.images.replace(/^.*[\\\/]/, '')
+            UploadFromUrlToS3(
+              row.images,
+              'products/' + fileName)
+              .then(function () {
+                //console.log('image was saved...');
+              }).catch(function (err) {
+                console.log('image was not saved!', err);
+              })
 
+            const imagesData = {
+              path: 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + fileName,
+              name: fileName,
+            }
+
+            data.images = imagesData
             data.save()
           })
           .on('end', (results) => {
