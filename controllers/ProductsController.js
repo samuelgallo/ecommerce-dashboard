@@ -1,14 +1,21 @@
-const Products = require('../models/ProductModel')
+const Transform = require('stream').Transform
+const AWS = require('aws-sdk')
 const formidable = require('formidable')
 const downloadTool = require('../config/download')
-//const json2csv = require('json2csv').parse;
-//const { parse } = require('json2csv');
+var https = require('https')
 
 // import products
 const csv = require('csv-parser')
 const fs = require('fs')
 
-var https = require('https');
+
+
+const Products = require('../models/ProductModel')
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+})
 
 //Node.js Function to save image from External URL.
 function fetchImage(url, localPath) {
@@ -44,9 +51,20 @@ exports.save = async (req, res) => {
   try {
     const form = formidable({ multiples: true })
 
+    var dataNow = Date.now()
+
     form.parse(req, (err, fields, files) => {
       const data = new Products(fields)
       data.images = files.images
+
+      data.images = files.images
+      data.images[0].name = dataNow + '-' + files.images.name
+      if (process.env.NODE_ENV == 'production') {
+        data.images[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/' + files.images.name
+      } else {
+        data.images[0].path = '/public/media/' + files.images.name
+      }
+
 
       // save db
       data.save()
@@ -54,8 +72,47 @@ exports.save = async (req, res) => {
       res.redirect('/dashboard/products')
 
     }).on('fileBegin', (name, file) => {
-      file.path = './public/media/' + file.name
+
+      if (file.name != '') {
+
+        if (process.env.NODE_ENV == 'production') {
+          file.on('error', e => this._error(e))
+
+          file.open = function () {
+            this._writeStream = new Transform({
+              transform(chunk, encoding, callback) { callback(null, chunk) }
+            })
+
+            this._writeStream.on('error', e => this.emit('error', e))
+
+            s3.upload({
+              ACL: 'public-read',
+              Bucket: process.env.AWS_BUCKET,
+              Key: dataNow + '-' + file.name,
+              Body: this._writeStream
+            }, onUpload)
+          }
+
+          file.end = function (cb) {
+            this._writeStream.on('finish', () => {
+              this.emit('end')
+              cb()
+            })
+            this._writeStream.end()
+          }
+        } else {
+          file.path = '/public/media/' + dataNow + '-' + file.name
+        }
+
+      }
+
     })
+
+
+    // continue execution here
+    function onUpload(err, res) {
+      //err ? console.log('error:\n', err) : console.log('response:\n', res)
+    }
 
   } catch (err) {
     res.status(500).render('503', { error: err })

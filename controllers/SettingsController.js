@@ -1,5 +1,13 @@
+const Transform = require('stream').Transform
+const AWS = require('aws-sdk')
+
 const Settings = require('../models/Settings')
 const formidable = require('formidable')
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+})
 
 exports.index = async (req, res) => {
   try {
@@ -18,12 +26,20 @@ exports.save = async (req, res) => {
 
     var form = new formidable.IncomingForm()
 
+    var dataNow = Date.now()
+
     form.parse(req, (err, fields, files) => {
       const data = new Settings(fields)
 
       // if have input image save that, else not change image
       if (files.logo.name != '') {
         data.logo = files.logo
+        data.logo[0].name = dataNow + '-' + files.logo.name
+        if (process.env.NODE_ENV == 'production') {
+          data.logo[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/' + files.logo.name
+        } else {
+          data.logo[0].path = '/public/media/' + files.logo.name
+        }
       } else {
         data.logo = getFirstData.logo
       }
@@ -37,18 +53,54 @@ exports.save = async (req, res) => {
         data.save()
       }
 
-      res.redirect('/dashboard/settings')
+
+      setTimeout(function () {
+        res.redirect('/dashboard/settings')
+      }, 3000)
+
 
     }).on('fileBegin', (name, file) => {
       if (file.name != '') {
-        file.path = './public/media/' + file.name
+
+        if (process.env.NODE_ENV == 'production') {
+          file.on('error', e => this._error(e))
+
+          file.open = function () {
+            this._writeStream = new Transform({
+              transform(chunk, encoding, callback) { callback(null, chunk) }
+            })
+
+            this._writeStream.on('error', e => this.emit('error', e))
+
+            s3.upload({
+              ACL: 'public-read',
+              Bucket: process.env.AWS_BUCKET,
+              Key: dataNow + '-' + file.name,
+              Body: this._writeStream
+            }, onUpload)
+          }
+
+          file.end = function (cb) {
+            this._writeStream.on('finish', () => {
+              this.emit('end')
+              cb()
+            })
+            this._writeStream.end()
+          }
+        } else {
+          file.path = './public/media/' + dataNow + '-' + file.name
+        }
+
+
       }
     })
 
-
+    // continue execution here
+    function onUpload(err, res) {
+      //err ? console.log('error:\n', err) : console.log('response:\n', res)
+    }
 
   } catch (err) {
     res.render('503', { message: `can't save this configurations` })
   }
 }
-
