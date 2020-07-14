@@ -43,7 +43,7 @@
               <tr>
                 <td><%= product.sku %></td>
                 <!-- <td><img src="/public/media/<%- product.images[0]&&product.images[0].name %>" alt="Title" width="120"></td> -->
-                <td><img src="<%- product.images[0]&&product.images[0].path %>" alt="Title" width="120"></td>
+                <td><img src="<%- product.images[0]&&product.images[0] %>" alt="Title" width="120"></td>
                 <td><%= product.name %></td>
                 <td><%- product.price ? '$' : '' %><%= product.price %></td>
                 <td class="text-capitalize <%- product.status =='enable' ? 'text-success' : 'text-danger' %>"><%= product.status %></td>

@@ -1,8 +1,8 @@
 const mongoose = require('../config/database')
 
 const Product = new mongoose.Schema({
-  name: { type: String, required: true },
-  sku: { type: String, required: true },
+  name: { type: String },
+  sku: { type: String },
   price: Number,
   special_price: Number,
   status: String,

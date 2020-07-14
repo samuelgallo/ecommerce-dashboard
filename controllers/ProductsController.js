@@ -75,7 +75,7 @@ exports.save = async (req, res) => {
 
       if (file.name != '') {
 
-        if (process.env.NODE_ENV == 'dev') {
+        if (process.env.NODE_ENV == 'development') {
           file.path = './public/media/' + dataNow + '-' + file.name
         } else {
 
@@ -172,31 +172,95 @@ exports.upload = (req, res, next) => {
 
     const form = formidable({ multiples: true })
 
+    var dataNow = Date.now()
+
     form.parse(req, (err, fields, files) => {
       console.log(files.upload.path)
-      fs.createReadStream(files.upload.path)
-        .pipe(csv())
-        .on('data', (row) => {
+      // fs.createReadStream('https://dashboard-ecommerce.s3.amazonaws.com/csv/1594728960722-products1594697894753.csv')
+      //   .pipe(csv())
+      //   .on('data', (row) => {
 
-          let image_name = Date.now() + '.jpg';
-          let image_path = './public/media/upload/' + image_name;
-          fetchImage(row.images, image_path);
-          const data = new Products(row)
+      //     let image_name = Date.now() + '.jpg';
+      //     let image_path = './public/media/upload/' + image_name;
+      //     fetchImage(row.images, image_path);
+      //     const data = new Products(row)
 
-          data.images[1] = image_name
+      //     data.images[1] = image_name
 
-          data.save()
+      //     data.save()
 
-          console.log(data.images['path'])
-        })
-        .on('end', () => {
-          console.log('CSV file successfully processed');
-        })
+      //     console.log(data.images['path'])
+      //   })
+      //   .on('end', () => {
+      //     console.log('CSV file successfully processed');
+      //   })
 
     }).on('fileBegin', (name, file) => {
-      file.path = './public/media/upload/' + file.name
+      //file.path = './public/media/upload/' + file.name
+
+      if (file.name != '') {
+
+        // if (process.env.NODE_ENV == 'development') {
+        //   file.path = './public/media/upload/' + dataNow + '-' + file.name
+        // } else {
+
+        file.on('error', e => this._error(e))
+
+        file.open = function () {
+          this._writeStream = new Transform({
+            transform(chunk, encoding, callback) { callback(null, chunk) }
+          })
+
+          this._writeStream.on('error', e => this.emit('error', e))
+
+          s3.upload({
+            ACL: 'public-read',
+            Bucket: process.env.AWS_BUCKET,
+            Key: 'csv/' + dataNow + '-' + file.name,
+            Body: this._writeStream,
+            ContentType: file.type
+          }, onUpload)
+        }
+
+        file.end = function (cb) {
+          this._writeStream.on('finish', () => {
+            this.emit('end')
+            cb()
+          })
+          this._writeStream.end()
+        }
+        //}
+
+      }
 
     })
+    // continue execution here
+    function onUpload(err, res) {
+      err ? console.log('error:\n', err) : console.log('response:\n', res)
+
+      const params = { Bucket: res.Bucket, Key: res.Key }
+      try {
+        const file = s3.getObject(params).createReadStream();
+
+        file.pipe(csv())
+          .on('data', function (row) {
+            console.log(row)
+            const data = new Products(row)
+
+            data.save()
+          })
+          .on('end', (results) => {
+            console.log('CSV file successfully processed');
+          })
+
+
+      } catch (err) {
+        console.log(err)
+
+      }
+
+
+    }
 
     res.redirect('/dashboard/products/import')
 

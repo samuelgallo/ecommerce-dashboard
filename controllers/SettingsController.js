@@ -35,10 +35,10 @@ exports.save = async (req, res) => {
       if (files.logo.name != '') {
         data.logo = files.logo
         data.logo[0].name = dataNow + '-' + files.logo.name
-        if (process.env.NODE_ENV == 'production') {
-          data.logo[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/' + files.logo.name
-        } else {
+        if (process.env.NODE_ENV == 'development') {
           data.logo[0].path = '/public/media/' + files.logo.name
+        } else {
+          data.logo[0].path = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/' + files.logo.name
         }
       } else {
         data.logo = getFirstData.logo
@@ -62,7 +62,7 @@ exports.save = async (req, res) => {
     }).on('fileBegin', (name, file) => {
       if (file.name != '') {
 
-        if (process.env.NODE_ENV == 'dev') {
+        if (process.env.NODE_ENV == 'development') {
           file.path = './public/media/' + dataNow + '-' + file.name
         } else {
 
@@ -80,7 +80,8 @@ exports.save = async (req, res) => {
               ACL: 'public-read',
               Bucket: process.env.AWS_BUCKET,
               Key: dataNow + '-' + file.name,
-              Body: this._writeStream
+              Body: this._writeStream,
+              ContentType: file.type
             }, onUpload)
           }
 
