@@ -2,15 +2,16 @@ const Transform = require('stream').Transform
 const AWS = require('aws-sdk')
 const formidable = require('formidable')
 const downloadTool = require('../config/download')
-var https = require('https')
+const https = require('https')
 const request = require('request')
 
 // import products
 const csv = require('csv-parser')
 const fs = require('fs')
 
+require('dotenv').config()
 
-
+// Products Model
 const Products = require('../models/ProductModel')
 
 const s3 = new AWS.S3({
@@ -21,11 +22,11 @@ const s3 = new AWS.S3({
 
 //Node.js Function to save image from External URL.
 function fetchImage(url, localPath) {
-  var fullUrl = url;
-  var file = fs.createWriteStream(localPath);
+  var fullUrl = url
+  var file = fs.createWriteStream(localPath)
   var request = https.get(url, function (response) {
     response.pipe(file)
-  });
+  })
 }
 
 function UploadFromUrlToS3(url, destPath) {
@@ -46,8 +47,8 @@ function UploadFromUrlToS3(url, destPath) {
         Body: body
       }
       resolve(s3.putObject(objectParams).promise())
-    });
-  });
+    })
+  })
 }
 
 // Route to show all products
@@ -196,64 +197,97 @@ exports.upload = (req, res, next) => {
 
     const form = formidable({ multiples: true })
 
-    var dataNow = Date.now()
+    const dataNow = Date.now()
 
     form.parse(req, (err, fields, files) => {
       //console.log(files.upload.path)
-      // fs.createReadStream('https://dashboard-ecommerce.s3.amazonaws.com/csv/1594728960722-products1594697894753.csv')
-      //   .pipe(csv())
-      //   .on('data', (row) => {
+      if (process.env.NODE_ENV == 'development') {
+        fs.createReadStream(files.upload.path).pipe(csv())
+          .on('data', (row) => {
 
-      //     let image_name = Date.now() + '.jpg';
-      //     let image_path = './public/media/upload/' + image_name;
-      //     fetchImage(row.images, image_path);
-      //     const data = new Products(row)
+            let image_name = Date.now() + '.jpg'
+            let image_path = './public/media/upload/' + image_name
+            fetchImage(row.images, image_path)
+            const data = new Products(row)
 
-      //     data.images[1] = image_name
+            data.images[1] = image_name
 
-      //     data.save()
+            data.save()
 
-      //     console.log(data.images['path'])
-      //   })
-      //   .on('end', () => {
-      //     console.log('CSV file successfully processed');
-      //   })
+            console.log(data.images['path'])
+          })
+          .on('end', () => {
+            console.log('CSV file successfully processed')
+          })
+      } else {
+
+        try {
+          const params = { Bucket: res.Bucket, Key: res.Key }
+          const file = s3.getObject(params).createReadStream()
+
+          file.pipe(csv())
+            .on('data', function (row) {
+              //console.log(row)
+              const data = new Products(row)
+              var fileName = row.images.replace(/^.*[\\\/]/, '')
+              UploadFromUrlToS3(
+                row.images,
+                'products/' + fileName)
+                .then(function () {
+                  //console.log('image was saved...')
+                }).catch(function (err) {
+                  console.log('image was not saved!', err)
+                })
+
+              data.images = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + fileName
+              data.save()
+            })
+            .on('end', (results) => {
+              console.log('CSV file successfully processed')
+            })
+
+
+        } catch (err) {
+          //console.log(err)
+          res.status(500).render('503', { error: err })
+        }
+      }
 
     }).on('fileBegin', (name, file) => {
       //file.path = './public/media/upload/' + file.name
 
       if (file.name != '') {
 
-        // if (process.env.NODE_ENV == 'development') {
-        //   file.path = './public/media/upload/' + dataNow + '-' + file.name
-        // } else {
+        if (process.env.NODE_ENV == 'development') {
+          file.path = './public/media/upload/' + dataNow + '-' + file.name
+        } else {
 
-        file.on('error', e => this._error(e))
+          file.on('error', e => this._error(e))
 
-        file.open = function () {
-          this._writeStream = new Transform({
-            transform(chunk, encoding, callback) { callback(null, chunk) }
-          })
+          file.open = function () {
+            this._writeStream = new Transform({
+              transform(chunk, encoding, callback) { callback(null, chunk) }
+            })
 
-          this._writeStream.on('error', e => this.emit('error', e))
+            this._writeStream.on('error', e => this.emit('error', e))
 
-          s3.upload({
-            ACL: 'public-read',
-            Bucket: process.env.AWS_BUCKET,
-            Key: 'csv/' + dataNow + '-' + file.name,
-            Body: this._writeStream,
-            ContentType: file.type
-          }, onUpload)
+            s3.upload({
+              ACL: 'public-read',
+              Bucket: process.env.AWS_BUCKET,
+              Key: 'csv/' + dataNow + '-' + file.name,
+              Body: this._writeStream,
+              ContentType: file.type
+            }, onUpload)
+          }
+
+          file.end = function (cb) {
+            this._writeStream.on('finish', () => {
+              this.emit('end')
+              cb()
+            })
+            this._writeStream.end()
+          }
         }
-
-        file.end = function (cb) {
-          this._writeStream.on('finish', () => {
-            this.emit('end')
-            cb()
-          })
-          this._writeStream.end()
-        }
-        //}
 
       }
 
@@ -261,50 +295,15 @@ exports.upload = (req, res, next) => {
     // continue execution here
     function onUpload(err, res) {
       //err ? console.log('error:\n', err) : console.log('response:\n', res)
-
-      const params = { Bucket: res.Bucket, Key: res.Key }
-      try {
-        const file = s3.getObject(params).createReadStream();
-
-        file.pipe(csv())
-          .on('data', function (row) {
-            //console.log(row)
-            const data = new Products(row)
-            var fileName = row.images.replace(/^.*[\\\/]/, '')
-            UploadFromUrlToS3(
-              row.images,
-              'products/' + fileName)
-              .then(function () {
-                //console.log('image was saved...');
-              }).catch(function (err) {
-                console.log('image was not saved!', err);
-              })
-
-            const imagesData = {
-              path: 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + fileName,
-              name: fileName,
-            }
-
-            data.images = imagesData
-            data.save()
-          })
-          .on('end', (results) => {
-            console.log('CSV file successfully processed');
-          })
-
-
-      } catch (err) {
-        console.log(err)
-
-      }
-
-
     }
 
-    res.redirect('/dashboard/products/import')
+    setTimeout(function () {
+      res.redirect('/dashboard/products')
+    })
+
 
   } catch (e) {
-    console.log(e);
+    res.status(500).render('503', { error: err })
   }
 }
 
@@ -316,10 +315,47 @@ exports.uploadImage = async (req, res, next) => {
       console.log('upload image')
 
     }).on('fileBegin', (name, file) => {
-      file.path = './public/media/' + file.name
+
+      if (file.name != '') {
+
+        if (process.env.NODE_ENV == 'development') {
+          file.path = './public/media/upload/' + dataNow + '-' + file.name
+        } else {
+
+          file.on('error', e => this._error(e))
+
+          file.open = function () {
+            this._writeStream = new Transform({
+              transform(chunk, encoding, callback) { callback(null, chunk) }
+            })
+
+            this._writeStream.on('error', e => this.emit('error', e))
+
+            s3.upload({
+              ACL: 'public-read',
+              Bucket: process.env.AWS_BUCKET,
+              Key: 'cms/' + dataNow + '-' + file.name,
+              Body: this._writeStream,
+              ContentType: file.type
+            }, onUpload)
+          }
+
+          file.end = function (cb) {
+            this._writeStream.on('finish', () => {
+              this.emit('end')
+              cb()
+            })
+            this._writeStream.end()
+          }
+        }
+
+      }
     })
-    res.status(200)
-    console.log('success')
+
+    // continue execution here
+    function onUpload(err, res) {
+      //err ? console.log('error:\n', err) : console.log('response:\n', res)
+    }
   } catch (err) {
     res.status(500).render('503', { error: err })
   }
