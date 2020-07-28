@@ -12,7 +12,13 @@
     font-size: 1.4rem;
     color: #fff;
     margin-bottom: 2rem;
-    padding-left: 15px;
+    a {
+      color: #fff;
+    }
+
+    @media (min-width: 1200px) {
+      padding-left: 15px;
+    }
   }
 
   ul {

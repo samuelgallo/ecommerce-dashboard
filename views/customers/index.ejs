@@ -7,13 +7,13 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <%- include('../partials/header'); -%>
 
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-6">
           <div class="welcome">
             <h1>Customers</h1>
           </div>
         </div>
-        <div class="col-6 align-self-center text-lg-right">
+        <div class="col-6 align-self-center text-right">
           <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
           <a
             class="btn btn-success"

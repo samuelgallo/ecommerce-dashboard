@@ -368,6 +368,6 @@ exports.download = async (req, res) => {
   try {
     await downloadTool(res, 'products', data, fields)
   } catch (err) {
-    res.status(500).render('503', { error: err })
+    res.status(500).render('503', { message: err })
   }
 }

@@ -42,3 +42,5 @@ const download = (res, fileName, data, fields) => {
     })
   }
 }
+
+module.exports = download

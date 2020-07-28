@@ -7,13 +7,13 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <%- include('../partials/header'); -%>
 
-      <div class="row">
-        <div class="col-6">
+      <div class="row mb-3">
+        <div class="col-12 col-md-6">
           <div class="welcome">
             <h1>Products</h1>
           </div>
         </div>
-        <div class="col-6 align-self-center text-lg-right">
+        <div class="col-12 col-md-6 align-self-center text-right">
           <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
             <a class="btn btn-link" href="/dashboard/products/download" role="button">Export</a>
             <a class="btn btn-link" href="/dashboard/products/import" role="button">Import</a>
