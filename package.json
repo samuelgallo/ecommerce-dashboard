@@ -2,8 +2,8 @@
   "name": "ecommerce-dashboard",
   "version": "1.0.0",
   "scripts": {
-    "test": "NODE_ENV=development jest",
-    "test:watch": "NODE_ENV=development jest --watch",
+    "test": "NODE_ENV=development mocha",
+    "test:watch": "mocha --watch --recursive",
     "start": "pm2 start index.js --env production",
     "stop": "pm2 stop index.js",
     "dev": "NODE_ENV=development nodemon index.js",
@@ -13,10 +13,10 @@
   "author": "Samuel Gallo <samuel@samuelgallo.com>",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^25.1.0",
-    "nodemon": "^2.0.4",
-    "superagent": "^5.3.1",
-    "supertest": "^4.0.2"
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.0.1",
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "aws-sdk": "^2.721.0",
@@ -41,10 +41,7 @@
     "path": "^0.12.7",
     "pm2": "^4.3.0"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "coveragePathIgnorePatterns": [
-      "/node_modules/"
-    ]
+  "mocha": {
+    "spec": "__tests__"
   }
 }
