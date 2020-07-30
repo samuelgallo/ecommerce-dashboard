@@ -2,7 +2,7 @@
   "name": "ecommerce-dashboard",
   "version": "1.0.0",
   "scripts": {
-    "test": "NODE_ENV=development mocha",
+    "test": "NODE_ENV=development mocha --exit",
     "test:watch": "mocha --watch --recursive",
     "start": "pm2 start index.js --env production",
     "stop": "pm2 stop index.js",
@@ -39,7 +39,8 @@
     "passport-google-oauth": "^2.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "path": "^0.12.7",
-    "pm2": "^4.3.0"
+    "pm2": "^4.3.0",
+    "supertest": "^4.0.2"
   },
   "mocha": {
     "spec": "__tests__"
