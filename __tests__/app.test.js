@@ -12,8 +12,6 @@ describe('App', function () {
       .get('/')
       .end(function (err, res) {
         res.should.have.status(200)
-        res.should.be.a('object');
-
         done()
       })
   })
