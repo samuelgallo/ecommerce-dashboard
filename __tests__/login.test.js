@@ -6,14 +6,22 @@ var should = chai.should()
 chai.use(chaiHttp)
 
 
-describe('Login', function () {
-  it('should GET /', function (done) {
+describe('Login Controller', function () {
+
+  it('should fail POST /login/auth', function (done) {
     chai.request(server)
-      .get('/')
+      .post('/login/auth').send({ email: 'adminn', password: 'admin' })
+      .end(function (err, res) {
+        res.should.have.status(401)
+        done()
+      })
+  })
+
+  it('should success login POST /login/auth', function (done) {
+    chai.request(server)
+      .post('/login/auth').send({ email: 'admin', password: 'admin' })
       .end(function (err, res) {
         res.should.have.status(200)
-        res.should.be.a('object');
-
         done()
       })
   })
