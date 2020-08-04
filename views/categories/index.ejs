@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="col-6 align-self-center text-right">
-          <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
+          <% if(user&&user.role == 'admin' || user&&user.role == 'analyst' || user&&user.role == 'assistant'){ %>
           <a
             class="btn btn-success"
             href="/dashboard/categories/create"
