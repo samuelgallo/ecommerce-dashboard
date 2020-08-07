@@ -15,7 +15,7 @@ exports.save = async (req, res) => {
 
     const data = new Register(req.body)
     if (user) {
-      res.redirect('/register')
+      res.status(401).render('login', { title: 'Login', message: 'Can\'t register, user already registred' })
     } else {
       await data.save()
       res.redirect('/login')
