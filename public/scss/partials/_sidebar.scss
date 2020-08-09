@@ -31,7 +31,8 @@
     display: block;
     padding: 0.6rem 1.5rem;
     transition: all ease-in-out 0.2s;
-    &:hover {
+    &:hover,
+    &.active {
       color: #fff;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;
