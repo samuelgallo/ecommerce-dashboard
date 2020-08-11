@@ -1,0 +1,100 @@
+<%- include('../partials/head'); -%>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+<div class="container-fluid">
+  <div class="row">
+    <%- include('../partials/sidebar'); -%>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <%- include('../partials/header'); -%>
+
+      <% if(user&&user.role == 'admin' || user&&user.role == 'analyst' || user&&user.role == 'assistant'){ %>
+      <div class="row">
+        <div class="col-12">
+          <div class="welcome">
+            <h1>Detail Product - <%- product&&product.name %></h1>
+          </div>
+        </div>
+      </div>
+
+      <% if (typeof message !== 'undefined') { %>
+      <div class="alert alert-success" role="alert">
+        <%= message&&message %>
+      </div>
+      <% } %>
+
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Name</th>
+                <td><%- product&&product.name %></td>
+              </tr>
+              <tr>
+                <th scope="row">Url</th>
+                <td><%- product&&product.path %></td>
+              </tr>
+              <tr>
+                <th scope="row">SKU</th>
+                <td><%- product&&product.sku %></td>
+              </tr>
+              <tr>
+                <th scope="row">Price</th>
+                <td><%- product&&product.price %></td>
+              </tr>
+              <tr>
+                <th scope="row">Special Price</th>
+                <td><%- product&&product.special_price %></td>
+              </tr>
+              <tr>
+                <th scope="row">Description</th>
+                <td><%- product&&product.description %></td>
+              </tr>
+              <tr>
+                <th scope="row">Quantity</th>
+                <td><%- product&&product.quantity %></td>
+              </tr>
+              <tr>
+                <th scope="row">Status</th>
+                <td><%- product&&product.status %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% } else { %>
+        <p>You are not allowed to view or edit this page!</p>
+      <% } %>
+
+      <%- include('../partials/copyright'); -%>
+
+    </main>
+  </div>
+</div>
+<script src="https://cloud.tinymce.com/stable/tinymce.min.js?apiKey=2tmhebveh90johqv0vzxo23yd0e9wjb5267kzgb9qwv3k6ps"></script>
+<script>
+tinymce.init({
+selector: '#description',
+height: 500,
+theme: 'modern',
+plugins: 'print preview searchreplace autolink directionality   visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists textcolor wordcount  imagetools  contextmenu colorpicker textpattern help',
+toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+images_upload_url: '/dashboard/products/upload/image',
+  automatic_uploads: true,
+  /* we override default upload handler to simulate successful upload*/
+  images_upload_handler: function (blobInfo, success, failure) {
+    setTimeout(function () {
+      /* no matter what you upload, we will turn it into TinyMCE logo :)*/
+      success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+    }, 2000);
+  }
+});</script>
+
+<%- include('../partials/footer'); -%>

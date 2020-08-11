@@ -371,3 +371,14 @@ exports.download = async (req, res) => {
     res.status(500).render('503', { message: err })
   }
 }
+
+// Route to detail product
+exports.detail = async (req, res) => {
+  try {
+    // retry by product id
+    const data = await Products.findOne({ _id: req.params.id })
+    res.status(200).render('product/detail', { title: 'Detail', product: data })
+  } catch (err) {
+    res.status(500).render('503', { error: err })
+  }
+}

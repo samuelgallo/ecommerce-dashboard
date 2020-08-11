@@ -35,6 +35,7 @@
               <th>Name</th>
               <th>Price</th>
               <th>Status</th>
+              <th>Preview</th>
               <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
               <th width="100">Action</th>
               <% } %>
@@ -48,9 +49,12 @@
                 <td><img src="<%= product.images['path'] %>" alt="" width="120"></td>
                 <td><%= product.name %></td>
                 <td><%- product.price ? '$' : '' %><%= product.price %></td>
+                
                 <td class="text-capitalize <%- product.status =='enable' ? 'text-success' : 'text-danger' %>"><%= product.status %></td>
+                <td><a href="/dashboard/products/detail/<%= product._id %>">Detail</a></td>
                 <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
                 <td>
+
                   <a href="/dashboard/products/edit/<%= product._id %>">Edit</a> 
                   <% if(user&&user.role == 'admin'){ %>
                   | <a href="/dashboard/products/delete/<%= product._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
