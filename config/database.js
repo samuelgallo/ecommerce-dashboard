@@ -4,7 +4,7 @@ require('dotenv').config()
 // if in development mode get a local url
 const urlDatabase = (process.env.NODE_ENV === 'development') ? process.env.DB_HOST_LOCAL : process.env.DB_HOST_REMOTE
 
-mongoose.connect('mongodb://cruddbmongouser:alfabravo@ds161913.mlab.com:61913/crudmongodb', {
+mongoose.connect(urlDatabase, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
