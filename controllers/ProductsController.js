@@ -222,7 +222,8 @@ exports.upload = (req, res, next) => {
       } else {
 
         try {
-          const params = { Bucket: res.Bucket, Key: res.Key }
+
+          const params = { Bucket: process.env.AWS_BUCKET, Key: process.env.AWS_SECRET_ACCESS_KEY }
           const file = s3.getObject(params).createReadStream()
 
           file.pipe(csv())
