@@ -192,7 +192,6 @@ exports.import = async (req, res) => {
 
 // upload by file .csv
 exports.upload = (req, res, next) => {
-
   try {
 
     const form = formidable({ multiples: true })
@@ -200,7 +199,7 @@ exports.upload = (req, res, next) => {
     const dataNow = Date.now()
 
     form.parse(req, (err, fields, files) => {
-      //console.log(files.upload.path)
+      //console.log(files)
       if (process.env.NODE_ENV == 'development') {
         fs.createReadStream(files.upload.path).pipe(csv())
           .on('data', (row) => {
@@ -219,39 +218,6 @@ exports.upload = (req, res, next) => {
           .on('end', () => {
             console.log('CSV file successfully processed')
           })
-      } else {
-
-        try {
-
-          const params = { Bucket: process.env.AWS_BUCKET, Key: process.env.AWS_SECRET_ACCESS_KEY }
-          const file = s3.getObject(params).createReadStream()
-
-          file.pipe(csv())
-            .on('data', function (row) {
-              //console.log(row)
-              const data = new Products(row)
-              var fileName = row.images.replace(/^.*[\\\/]/, '')
-              UploadFromUrlToS3(
-                row.images,
-                'products/' + fileName)
-                .then(function () {
-                  //console.log('image was saved...')
-                }).catch(function (err) {
-                  console.log('image was not saved!', err)
-                })
-
-              data.images = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + fileName
-              data.save()
-            })
-            .on('end', (results) => {
-              console.log('CSV file successfully processed')
-            })
-
-
-        } catch (err) {
-          //console.log(err)
-          res.status(500).render('503', { error: err })
-        }
       }
 
     }).on('fileBegin', (name, file) => {
@@ -288,6 +254,8 @@ exports.upload = (req, res, next) => {
             })
             this._writeStream.end()
           }
+
+
         }
 
       }
@@ -295,12 +263,46 @@ exports.upload = (req, res, next) => {
     })
     // continue execution here
     function onUpload(err, res) {
-      //err ? console.log('error:\n', err) : console.log('response:\n', res)
+      err ? console.log('error:\n', err) : console.log('response:\n', res)
+
+      if (process.env.NODE_ENV != 'development') {
+        try {
+          const params = { Bucket: process.env.AWS_BUCKET, Key: res.Key }
+          const file = s3.getObject(params).createReadStream()
+
+          file.pipe(csv())
+            .on('data', function (row) {
+              //console.log(row)
+              const data = new Products(row)
+              var fileName = row.images.replace(/^.*[\\\/]/, '')
+              UploadFromUrlToS3(
+                row.images,
+                'products/' + fileName)
+                .then(function () {
+                  //console.log('image was saved...')
+                }).catch(function (err) {
+                  console.log('image was not saved!', err)
+                })
+
+              data.images = 'https://' + process.env.AWS_BUCKET + '.s3.amazonaws.com/products/' + fileName
+              data.save()
+            })
+            .on('end', (results) => {
+              console.log('CSV file successfully processed')
+            })
+
+
+        } catch (err) {
+          console.log(err)
+          //res.status(500).render('503', { error: err })
+        }
+      }
+
     }
 
     setTimeout(function () {
       res.redirect('/dashboard/products')
-    })
+    }, 6000)
 
 
   } catch (e) {

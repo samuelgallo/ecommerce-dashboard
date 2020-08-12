@@ -85,9 +85,9 @@
                 <input type="file" id="image" name="image" accept="image/png, image/jpeg">
               </div>
 
-                <% if(product.image){ %>
+                <% if(product.images){ %>
                   <div class="col-sm-12">
-                    <img src="/<%- product.image[0]&&product.image[0].path %>" alt="" width="200">
+                    <img src="<%= product.images %>" alt="" width="200">
                   </div>
                 <% } %>
             </div>
