@@ -7,19 +7,21 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <%- include('../partials/header'); -%>
 
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-6">
           <div class="welcome">
             <h1>Customers</h1>
           </div>
         </div>
-        <div class="col-6 align-self-center text-lg-right">
+        <div class="col-6 align-self-center text-right">
+          <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
           <a
             class="btn btn-success"
             href="/dashboard/customers/create"
             role="button"
             >New Customer</a
           >
+          <% } %>
         </div>
       </div>
 
@@ -31,8 +33,11 @@
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Role</th>
                   <th>Status</th>
+                  <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
                   <th width="100">Action</th>
+                  <% } %>
                 </tr>
               </thead>
               <tbody>
@@ -40,22 +45,26 @@
                 <tr>
                   <td><%= customer.name %></td>
                   <td><%= customer.email %></td>
+                  <td><%= customer.role %></td>
                   <td
                     class="text-capitalize <%- customer.status =='1' ? 'text-success' : 'text-danger' %>"
                   >
                     <%- customer.status =='1' ? 'Enable' : 'Disable' %>
                   </td>
+                  <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
                   <td>
                     <a href="/dashboard/customers/edit/<%= customer._id %>"
                       >Edit</a
                     >
+                    <% if(user&&user.role == 'admin'){ %>
                     |
                     <a
                       href="/dashboard/customers/delete/<%= customer._id %>"
                       onclick="return confirm('Are you sure you want to delete this customer?');"
                       >Delete</a
-                    >
+                    >  <% } %>
                   </td>
+                  <% } %>
                 </tr>
                 <% }); %>
               </tbody>

@@ -1,10 +1,12 @@
-.home{
-  .welcome{
-    margin-bottom: 2rem;
-    h1{
+.home {
+  .welcome {
+    @media (min-width: 1200px) {
+      margin-bottom: 2rem;
+    }
+    h1 {
       font-size: 1.8rem;
     }
-    span{
+    span {
       font-size: 1rem;
     }
   }

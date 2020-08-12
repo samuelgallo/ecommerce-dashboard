@@ -13,25 +13,29 @@ exports.auth = async (req, res, next) => {
   try {
     Login.findOne({ email: req.body.email }, (err, user) => {
       if (!user) {
-        res.render('login', { title: 'Login', message: 'Invalid login or password' })
+        res.status(401).render('login', { title: 'Login', message: 'Invalid login or password' })
       } else {
-        // checking if password are the same
-        user.comparePassword(req.body.password, function (err, isMatch) {
-          if (err) {
-            res.render('login', { title: 'Login', message: 'Invalid password' })
-          } else {
-            user = {
-              email: user.email,
-              password: user.password,
-              name: user.name,
-              id: user._id
+        if (user.provider) {
+          res.status(401).render('login', { title: 'Login', message: 'You need to use the ' + user.provider + ' to login.' })
+        } else {
+          // checking if password are the same
+          user.comparePassword(req.body.password, function (err, isMatch) {
+            if (err) {
+              res.status(401).render('login', { title: 'Login', message: 'Invalid password' })
+            } else {
+              user = {
+                email: user.email,
+                password: user.password,
+                name: user.name,
+                id: user._id
+              }
+              // setting session
+              req.session.user = user
+              res.locals.user = user
+              res.redirect('/dashboard')
             }
-            // setting session
-            req.session.user = user
-            res.locals.user = user
-            res.redirect('/dashboard')
-          }
-        })
+          })
+        }
       }
     })
 

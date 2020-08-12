@@ -7,14 +7,16 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <%- include('../partials/header'); -%>
 
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-6">
           <div class="welcome">
             <h1>Pages</h1>
           </div>
         </div>
-        <div class="col-6 align-self-center text-lg-right">
-          <a class="btn btn-success" href="/dashboard/pages/create" role="button">New Page</a>
+        <div class="col-6 align-self-center text-right">
+          <% if(user&&user.role == 'admin' || user&&user.role == 'analyst' || user&&user.role == 'assistant'){ %>
+            <a class="btn btn-success" href="/dashboard/pages/create" role="button">New Page</a>
+          <% } %>
         </div>
       </div>
 
@@ -27,7 +29,9 @@
               <th>Title</th>
               <th>Path</th>
               <th>Status</th>
+              <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
               <th width="100">Action</th>
+              <% } %>
             </tr>
           </thead>
           <tbody>
@@ -37,7 +41,14 @@
                 <td><%= page.title %></td>
                 <td><%= page.path %></td>
                 <td class="text-capitalize <%- page.status =='1' ? 'text-success' : 'text-danger' %>"><%- page.status =='1' ? 'Enable' : 'Disable' %></td>
-                <td><a href="/dashboard/pages/edit/<%= page._id %>">Edit</a> | <a href="/dashboard/pages/delete/<%= page._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a></td>
+                <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
+                <td>
+                  <a href="/dashboard/pages/edit/<%= page._id %>">Edit</a> 
+                  <% if(user&&user.role == 'admin'){ %>
+                    | <a href="/dashboard/pages/delete/<%= page._id %>" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                    <% } %>
+                  </td>
+                <% } %>
               </tr>
             <% }); %>
 

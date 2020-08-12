@@ -7,6 +7,7 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
       <%- include('../partials/header'); -%>
 
+      <% if(user&&user.role == 'admin' || user&&user.role == 'analyst'){ %>
       <div class="row">
         <div class="col-12">
           <div class="welcome">
@@ -70,7 +71,7 @@
                         <td><%= product.sku %></td>
                         <!-- <td><img src="/public/media/<%- product.images[0]&&product.images[0].name %>" alt="Title" width="120"></td> -->
                         <td>
-                          <img src="/public/media/upload/<%- product.images[1]&&product.images[1] %>" alt="Title"
+                          <img src="<%= product.images['path'] %>" alt="Title"
                             width="120" />
                         </td>
                         <td><%= product.name %></td>
@@ -123,6 +124,9 @@
           </form>
         </div>
       </div>
+      <% } else { %>
+        <p>You are not allowed to view or edit this page!</p>
+      <% } %>
 
       <%- include('../partials/copyright'); -%>
     </main>

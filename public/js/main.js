@@ -17,4 +17,12 @@
     })
   }
 
+  if (location.pathname === '/dashboard') {
+    jQuery('.dashboard').addClass('active');
+  } else {
+    jQuery('.sidebar-links a[href^="' + location.pathname + '"]').addClass('active');
+  }
+
+
+
 }())

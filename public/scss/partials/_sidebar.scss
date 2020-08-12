@@ -12,7 +12,13 @@
     font-size: 1.4rem;
     color: #fff;
     margin-bottom: 2rem;
-    padding-left: 15px;
+    a {
+      color: #fff;
+    }
+
+    @media (min-width: 1200px) {
+      padding-left: 15px;
+    }
   }
 
   ul {
@@ -25,7 +31,8 @@
     display: block;
     padding: 0.6rem 1.5rem;
     transition: all ease-in-out 0.2s;
-    &:hover {
+    &:hover,
+    &.active {
       color: #fff;
       border-top-right-radius: 25px;
       border-bottom-right-radius: 25px;

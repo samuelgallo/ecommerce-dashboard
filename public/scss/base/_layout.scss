@@ -1,17 +1,38 @@
-html, body{
+html,
+body {
   height: 100%;
 }
 
-body{
-  font-family: 'Open Sans', sans-serif;
+body {
+  font-family: "Open Sans", sans-serif;
   font-size: 14px;
   line-height: 1.6;
   color: #192a56;
 }
 
-.feather{
+.feather {
   width: 20px;
   height: 20px;
-  margin-right: .4rem;
+  margin-right: 0.4rem;
   vertical-align: text-bottom;
+}
+
+.navbar-toggler {
+  svg {
+    fill: #fff;
+  }
+}
+
+table {
+  th {
+    td {
+      white-space: nowrap;
+    }
+  }
+  tr {
+    td {
+      white-space: nowrap;
+      padding: 10px !important;
+    }
+  }
 }
