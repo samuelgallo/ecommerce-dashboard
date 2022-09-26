@@ -39,7 +39,7 @@
     "passport-google-oauth": "^2.0.0",
     "passport-linkedin-oauth2": "^2.0.0",
     "path": "^0.12.7",
-    "pm2": "^4.3.0",
+    "pm2": "^5.2.0",
     "supertest": "^4.0.2"
   },
   "mocha": {
