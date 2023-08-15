@@ -26,7 +26,7 @@ docker-compose up
 
 ## Online demo
 
-[Demo](https://still-mountain-62095.herokuapp.com/)\
+[Demo](https://ecommerce-dashboard-hhzo.onrender.com/)\
 Email: admin\
 Password: admin
 
